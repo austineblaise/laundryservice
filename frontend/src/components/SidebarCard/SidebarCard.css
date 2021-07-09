@@ -1,0 +1,7 @@
+.card ul{
+    background-color: black;
+}
+
+#sidebar__link:hover {
+    background-color: tomato;
+}
