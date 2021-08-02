@@ -20,6 +20,7 @@ import WhyUs from "./components/WhyUs/WhyUs";
 import SelectionNavbar from "./components/SelectionNavbar/SelectionNavbar";
 import CheckoutNav from "./components/CheckoutNav/CheckoutNav";
 import Auth from "./components/Auth/Auth";
+import Cart from "./components/Cart/Cart";
 
 function App() {
 	return (
@@ -96,6 +97,11 @@ function App() {
 
 					<Route path="/checkoutnav">
 						<CheckoutNav/>
+					</Route>
+
+
+					<Route path="/cart">
+						<Cart />
 					</Route>
 				</Switch>
 			</div>

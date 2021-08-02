@@ -12,6 +12,7 @@ import Badge from "@material-ui/core/Badge";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import IconButton from '@material-ui/core/IconButton';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
+import { useSelector } from "react-redux";
 
 const SelectionNavbar = () => {
 	const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
@@ -19,6 +20,11 @@ const SelectionNavbar = () => {
 	const location = useLocation();
 	const history = useHistory();
 	const classes = useStyles();
+
+
+	const cart = useSelector((state) => state.cart);
+
+	const { cartItems} = cart;
 
 	const logout = () => {
 		dispatch({ type: LOGOUT });
@@ -51,12 +57,12 @@ const SelectionNavbar = () => {
 					align="center"
 				>
 					<IconButton aria-label="show 11 new notifications" color="primary">
-          <Badge badgeContent={11} color="primary" fontSize="large">
+          <Badge badgeContent={ cartItems.length} color="primary" fontSize="large">
             <ShoppingBasketIcon fontSize="large" />
           </Badge>
         </IconButton>
 				</Typography>
-				{/* <img className={classes.image} src={memories} alt="icon" height="60" /> */}
+				{/* <img className={classes.image} ={memories} alt="icon" height="60" /> */}
 			</div>
 			<Toolbar className={classes.toolbar}>
 				{user?.result ? (

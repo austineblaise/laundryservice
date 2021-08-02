@@ -10,24 +10,32 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
 import CheckoutNav from "../CheckoutNav/CheckoutNav";
 import SelectionNavbar from "../SelectionNavbar/SelectionNavbar";
- 
-// const products = [
-// 	{ name: "Pijamas", desc: "A nice thing", price: "$9.99" },
-// 	{ name: "partened shirts", desc: "Another thing", price: "$3.45" },
-// 	{ name: "shorts", desc: "Something else", price: "$6.51" },
-// 	{ name: "Long trousers", desc: "Best thing of all", price: "$14.11" },
-// 	{ name: "Long short", desc: "Best thing of all", price: "$14.11" },
-// 	{ name: "Long sleeves", desc: "Best thing of all", price: "$14.11" },
-// 	{ name: "Long tame", desc: "Best thing of all", price: "$14.11" },
-// 	{ name: "Long trouser", desc: "Best thing of all", price: "$14.11" },
-// 	{ name: "Long tire", desc: "Best thing of all", price: "$14.11" },
-// 	{ name: "Shipping", desc: "", price: "Free" },
-// ];
+import LoadingBox from "../LoadingBox/LoadingBox";
+import MessageBox from "../MessageBox/MessageBox";
+import { useDispatch, useSelector } from "react-redux";
+import {
+	getProductDetails,
+	listProducts,
+} from "../../Redux/actions/productActions";
+import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox";
+import SaveIcon from "@material-ui/icons/Save";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import Avatar from "@material-ui/core/Avatar";
+import ImageIcon from "@material-ui/icons/Image";
+import { green } from "@material-ui/core/colors";
+import AddIcon from "@material-ui/icons/Add";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import {
+	addToCart,
+	reduceQuantity,
+	removeFromCart,
+} from "../../Redux/actions/addremovecart";
 
 const useStyles = makeStyles((theme) => ({
 	listItem: {
@@ -36,6 +44,10 @@ const useStyles = makeStyles((theme) => ({
 	total: {
 		fontWeight: 700,
 	},
+	button: {
+		margin: theme.spacing(1),
+		marginBottom: "10em",
+	},
 
 	paper: {
 		padding: theme.spacing(2),
@@ -43,6 +55,10 @@ const useStyles = makeStyles((theme) => ({
 		color: theme.palette.text.secondary,
 		overflowY: "scroll",
 		height: "90vh",
+	},
+
+	value: {
+		width: "10rem",
 	},
 
 	buttons: {
@@ -59,85 +75,146 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const SelectionPage = () => {
+const SelectionPage = ({ match }) => {
+	const [quantity, setQuantity] = useState(1);
+
+	const dispatch = useDispatch();
 	const classes = useStyles();
-	const [products, setProducts] = useState([]);
-	const [loading, setLoading] = useState([false]);
-	const [error, setError] = useState([false]);
+	// const [products, setProducts] = useState([]);
+	// const [loading, setLoading] = useState([false]);
+	// const [error, setError] = useState([false]);
+	const productList = useSelector((state) => state.productList);
+
+	const { loading, error, products } = productList;
+
+	const cart = useSelector((state) => state.cart);
+
+	const { cartItems } = cart;
+
+	const addToCarto = (product) => {
+		dispatch(addToCart(product));
+	};
+
+	const remove = (product) => {
+		dispatch(removeFromCart(product));
+	};
+
+	// const reduceQTY = (product) => {
+	// 	if (product <= 0) return;
+	// 	dispatch(reduceQuantity(product));
+	// };
+
+	//removeFromCart
+	//removeFromCartaus
 
 	useEffect(() => {
-		const fetchData = async () => {
-			try{
-				setLoading(true);
-			const { data } = await axios.get("/api/products");
-			setLoading(false);
-			setProducts(data);
-			} catch(err){
-				setError(err.message);
-				setLoading(false);
-			}
-			
-		};
-		fetchData();
-	}, []);
+		dispatch(listProducts());
+	}, [dispatch]);
+
+	// useEffect(() => {
+	// 	dispatch(  addToCart());
+	// }, [dispatch]);
 
 	return (
 		<React.Fragment>
 			<SelectionNavbar />
-			
+
 			<CssBaseline />
 
-			{loading? (<LoadingBox></LoadingBox>)
-			:
-			error? (<MessageBox>{error}</MessageBox>)
-			:<Container maxWidth="sm">
-			<Typography component="div" style={{ backgroundColor: "whiteSmoke" }}>
-				<div>
-					{/* <Typography variant="h6" gutterBottom>
+			{loading ? (
+				<LoadingBox />
+			) : (
+				<Container maxWidth="sm">
+					<Typography component="div" style={{ backgroundColor: "whiteSmoke" }}>
+						<div>
+							{/* <Typography variant="h6" gutterBottom>
 						make your order
 					</Typography> */}
-					<Grid item xs={12}>
-						<Paper className={classes.paper}>
-							<List disablePadding>
-								{products.map((product) => (
-									<ListItem className={classes.listItem} key={product.name}>
-										<ListItemText
-											primary={product.name}
-											secondary={product.price}
-										/>
-										<Typography variant="body2">
-											<IconButton>
-												<AddCircleIcon color="primary" />
-											</IconButton>
-										</Typography>
-									</ListItem>
-								))}
-								<ListItem className={classes.listItem}>
-									<ListItemText primary="Total" />
-									<Typography variant="subtitle1" className={classes.total}>
-										$34.06
-									</Typography>
-								</ListItem>
-							</List>
-						</Paper>
+							<Grid item xs={12}>
+								<Paper className={classes.paper}>
+									<List disablePadding>
+										{products.map((product) => (
+											<ListItem
+												divider
+												className={classes.listItem}
+												key={product.name}
+											>
+												<ListItemAvatar>
+													<Avatar>
+														<ImageIcon />
+													</Avatar>
+												</ListItemAvatar>
+												<ListItemText
+													primary={product.name}
+													secondary={product.price}
+												/>
 
-						<div className={classes.buttons}>
-							<Button className={classes.button}>Back</Button>
+												<div className={classes.buttons}>
+													{/* <Button variant="contained" size="small" color="primary">-</Button> */}
+													{/* <IconButton> */}
+													<Typography variant="body2">
+														<Button
+															variant="contained"
+															color="secondary"
+															size="small"
+															// className={classes.button}
+															// startIcon={<SaveIcon />}
+															onClick={() => remove(product)}
+															mb="50rem"
+														>
+															<DeleteForeverIcon color="danger" />
+														</Button>
+													</Typography>
+													{/* </IconButton> */}
 
-							<Button
-								variant="contained"
-								color="primary"
-								className={classes.button}
-							>
-								Next
-							</Button>
+													<Typography className="count">
+														{cartItems.count}
+													</Typography>
+
+													{/* <IconButton>
+													<AddCircleIcon fontSize="large" color="primary"/>
+													</IconButton> */}
+												</div>
+												<Typography variant="body2">
+													<Button
+														variant="contained"
+														color="primary"
+														size="small"
+														// className={classes.button}
+														// startIcon={<SaveIcon />}
+														mb="50rem"
+														onClick={() => addToCarto(product)}
+													>
+														<AddCircleIcon />
+													</Button>
+												</Typography>
+											</ListItem>
+										))}
+										<ListItem className={classes.listItem}>
+											<ListItemText primary="Total" />
+											<Typography variant="subtitle1" className={classes.total}>
+												$34.06
+											</Typography>
+										</ListItem>
+									</List>
+								</Paper>
+
+								<div className={classes.buttons}>
+									<Button className={classes.button}>Back</Button>
+
+									<Button
+										variant="contained"
+										color="primary"
+										className={classes.button}
+									>
+										Next
+									</Button>
+								</div>
+							</Grid>
 						</div>
-					</Grid>
-				</div>
-			</Typography>
-		</Container>
-		}
-			
+					</Typography>
+				</Container>
+			)}
 		</React.Fragment>
 	);
 };
