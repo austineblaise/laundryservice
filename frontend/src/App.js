@@ -21,6 +21,10 @@ import SelectionNavbar from "./components/SelectionNavbar/SelectionNavbar";
 import CheckoutNav from "./components/CheckoutNav/CheckoutNav";
 import Auth from "./components/Auth/Auth";
 import Cart from "./components/Cart/Cart";
+import Checkout from "./components/Checkout/Checkout";
+import DatePickers from "./components/DatePicker/DatePicker";
+import PlaceOrder from "./components/PlaceOrder/PlaceOrder";
+import FilterButtons from "./components/FilterButtons/FilterButtons";
 
 function App() {
 	return (
@@ -103,6 +107,27 @@ function App() {
 					<Route path="/cart">
 						<Cart />
 					</Route>
+
+					<Route path="/checkout">
+						<Checkout />
+					</Route>
+
+
+
+					<Route path="/datepicker">
+					<DatePickers/>
+					</Route>
+
+                    <Route path="/placeorder">
+					< PlaceOrder />
+					</Route>
+					
+					<Route path="/filterbuttons">
+					<FilterButtons />
+					</Route>
+					
+				{/* FilterButtons */}
+
 				</Switch>
 			</div>
 		</Router>

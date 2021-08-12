@@ -10,7 +10,8 @@ products: [
 				"url": "https://res.cloudinary.com/bookit/image/upload/v1608062030/products/dsvbpny402gelwugv2le.jpg"
 			}
 		],
-		"stock": 2000
+		"stock": 2000,
+		"category": "gentlemen"
 	},
 	{
 		"name": "jeanJacket",
@@ -22,7 +23,8 @@ products: [
 			}
 		],
 		
-		"stock": 2000
+		"stock": 2000,
+        "category": "ladies"
 		
 	},
 	{
@@ -35,7 +37,8 @@ products: [
 			}
 		],
 		
-		"stock": 2000
+		"stock": 2000,
+		"category": "native"
 	},
 	{
 		"name": "partened shirts",
@@ -46,7 +49,8 @@ products: [
 				"url": "https://res.cloudinary.com/bookit/image/upload/v1606231281/products/headphones_t2afnb.jpg"
 			}
 		],
-		"stock": 2000
+		"stock": 2000,
+		"category": "others"
 	},
 	{
 		"name": "singlets",
@@ -59,7 +63,8 @@ products: [
 			}
 		],
 		
-		"stock": 2000
+		"stock": 2000,
+		"category": "gentlemen"
 		
 	},
 	{
@@ -73,7 +78,8 @@ products: [
 			}
 		],
 
-		"stock": 2000
+		"stock": 2000,
+		"category": "others"
 	},
 	{
 		"name": "Pants",
@@ -86,7 +92,8 @@ products: [
 			}
 		],
 		
-		"stock": 2000
+		"stock": 2000,
+		"category": "gentlemen"
 		
 	},
 	{
@@ -100,7 +107,8 @@ products: [
 			}
 		],
 		
-		"stock": 2000
+		"stock": 2000,
+		"category": "ladies"
 
 	},
 	{
@@ -114,7 +122,8 @@ products: [
 			
 		],
 		
-		"stock": 2000
+		"stock": 2000,
+		"category": "gentlemen"
 		
 	}
 ]

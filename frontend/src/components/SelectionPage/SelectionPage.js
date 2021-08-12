@@ -36,6 +36,7 @@ import {
 	reduceQuantity,
 	removeFromCart,
 } from "../../Redux/actions/addremovecart";
+import FilterButtons from "../FilterButtons/FilterButtons";
 
 const useStyles = makeStyles((theme) => ({
 	listItem: {
@@ -80,16 +81,21 @@ const SelectionPage = ({ match }) => {
 
 	const dispatch = useDispatch();
 	const classes = useStyles();
-	// const [products, setProducts] = useState([]);
-	// const [loading, setLoading] = useState([false]);
-	// const [error, setError] = useState([false]);
+
 	const productList = useSelector((state) => state.productList);
 
-	const { loading, error, products } = productList;
+	const { loading, error, products, count } = productList;
 
-	const cart = useSelector((state) => state.cart);
+	const [items, setItems] = useState(products);
 
-	const { cartItems } = cart;
+	const allCategoris = ["All", ...new Set(items.map((item) => item.category))];
+	console.table(allCategoris);
+
+	const [buttons, setButtons] = useState(allCategoris);
+
+	// const cart = useSelector((state) => state.cart);
+
+	// const { cartItems, count } = cart;
 
 	const addToCarto = (product) => {
 		dispatch(addToCart(product));
@@ -99,13 +105,32 @@ const SelectionPage = ({ match }) => {
 		dispatch(removeFromCart(product));
 	};
 
-	// const reduceQTY = (product) => {
-	// 	if (product <= 0) return;
-	// 	dispatch(reduceQuantity(product));
-	// };
+	const filterItem = (categItem) => {
+		if (categItem === "All") {
+			setItems(products);
+			return;
+		}
 
-	//removeFromCart
-	//removeFromCartaus
+		const updatedItem = products.filter((curElem) => {
+			return curElem.category === categItem;
+		});
+
+		setItems(updatedItem);
+	};
+
+	// const handleBtns =(e)=>{
+	// 	let productCopy;
+
+	// 	if(e.target.value === "All"){
+	// 		productCopy = products
+	// 	}
+	// 	else{
+	// 		productCopy = products.filter(item => item.category === e.target.value)
+	// 	}
+
+	// 	setProductCopy(productCopy)
+
+	// }
 
 	useEffect(() => {
 		dispatch(listProducts());
@@ -118,7 +143,13 @@ const SelectionPage = ({ match }) => {
 	return (
 		<React.Fragment>
 			<SelectionNavbar />
-
+			<FilterButtons
+				buttons={buttons}
+				filterItem={filterItem}
+				products={products}
+				items={items}
+				allCategoris={allCategoris}
+			/>
 			<CssBaseline />
 
 			{loading ? (
@@ -133,7 +164,7 @@ const SelectionPage = ({ match }) => {
 							<Grid item xs={12}>
 								<Paper className={classes.paper}>
 									<List disablePadding>
-										{products.map((product) => (
+										{items.map((product) => (
 											<ListItem
 												divider
 												className={classes.listItem}
@@ -168,7 +199,7 @@ const SelectionPage = ({ match }) => {
 													{/* </IconButton> */}
 
 													<Typography className="count">
-														{cartItems.count}
+														{/* {count.cartItems.count}  */}
 													</Typography>
 
 													{/* <IconButton>
@@ -190,12 +221,12 @@ const SelectionPage = ({ match }) => {
 												</Typography>
 											</ListItem>
 										))}
-										<ListItem className={classes.listItem}>
+										{/* <ListItem className={classes.listItem}>
 											<ListItemText primary="Total" />
 											<Typography variant="subtitle1" className={classes.total}>
 												$34.06
 											</Typography>
-										</ListItem>
+										</ListItem> */}
 									</List>
 								</Paper>
 

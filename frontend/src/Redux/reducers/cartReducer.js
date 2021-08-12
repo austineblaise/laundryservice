@@ -2,10 +2,11 @@ import {
 	ADD_TO_CART,
 	REDUCE_QUANTITY,
 	REMOVE_FROM_CART,
+	SAVE_SHIPPING_INFO,
 } from "../constants/cartConstants";
 
 const carttReducer = (
-	state = { cartItems: JSON.parse(localStorage.getItem("cartItems") || "[]") },
+	state = { cartItems: JSON.parse(localStorage.getItem("cartItems") || "[]" ) , shippingInfo: {} },
 	action
 ) => {
 	switch (action.type) {
@@ -16,6 +17,9 @@ const carttReducer = (
 
 		case REDUCE_QUANTITY:
 		return { cartItems: action.payload.cartItems };
+		
+		case SAVE_SHIPPING_INFO:
+			return {...state, shippingInfo: action.payload}
 		default:
 			return state;
 	}

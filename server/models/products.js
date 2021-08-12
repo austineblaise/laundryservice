@@ -27,9 +27,22 @@ const productSchema = new mongoose.Schema({
             },
         }
     ],
-   
-    
-    stock: {
+
+
+
+
+    category: {
+        type: String,
+        required: [false, 'Please enter product name'],
+        
+        
+    },
+
+
+
+
+
+  stock: {
         type: Number,
         required: [true, 'Please enter product stock'],
         maxLength: [5, 'Product name cannot exceed 5 characters'],

@@ -4,6 +4,7 @@ import { Link, useHistory, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import decode from "jwt-decode";
 
+
 // import memories from '../../images/memories.png';
 // import * as actionType from '../../constants/actionTypes';
 import useStyles from "./styles";
@@ -20,6 +21,7 @@ const SelectionNavbar = () => {
 	const location = useLocation();
 	const history = useHistory();
 	const classes = useStyles();
+
 
 
 	const cart = useSelector((state) => state.cart);
@@ -46,18 +48,26 @@ const SelectionNavbar = () => {
 		setUser(JSON.parse(localStorage.getItem("profile")));
 	}, [location]);
 
+
+	const cartHandler = () => {
+		history.push("/cart");
+	};
+
+	//onClick={cartHandler}
+
 	return (
 		<AppBar className={classes.appBar} position="static" color="inherit">
 			<div className={classes.brandContainer}>
 				<Typography
-					component={Link}
-					to="/"
+					// component={Link}
+					// to="/"
 					className={classes.heading}
 					variant="h2"
 					align="center"
+					onClick={cartHandler}
 				>
 					<IconButton aria-label="show 11 new notifications" color="primary">
-          <Badge badgeContent={ cartItems.length} color="primary" fontSize="large">
+          <Badge badgeContent={ cartItems.reduce((a, c) => a + c.count, 0)} color="primary" fontSize="large">
             <ShoppingBasketIcon fontSize="large" />
           </Badge>
         </IconButton>

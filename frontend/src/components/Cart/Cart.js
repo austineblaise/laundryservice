@@ -1,4 +1,4 @@
-import React, { useEffect} from "react";
+import React, { useEffect } from "react";
 // import {makeStyles} from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -29,6 +29,7 @@ import { useSelector } from "react-redux";
 import SelectionNavbar from "../SelectionNavbar/SelectionNavbar";
 import { removeFromCart } from "../../Redux/actions/addremovecart";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { listProducts } from "../../Redux/actions/productActions";
 
 // const useStyles = makeStyles({
@@ -38,20 +39,26 @@ import { listProducts } from "../../Redux/actions/productActions";
 // })
 
 const Cart = () => {
-    const dispatch = useDispatch();
+	const dispatch = useDispatch();
+	let history = useHistory();
+
 	const cart = useSelector((state) => state.cart);
 
-    const { cartItems } = cart;
-    
-    // useEffect(() => {
+	const { cartItems } = cart;
+
+	// useEffect(() => {
 	// 	dispatch(listProducts());
 	// }, [dispatch]);
-
 
 	const remove = (product) => {
 		dispatch(removeFromCart(product));
 	};
 
+	const checkoutHandler = () => {
+		history.push("/checkout");
+	};
+
+	//  onClick={checkoutHandler}
 	return (
 		<div style={{ minHeight: "100vh" }}>
 			<SelectionNavbar />
@@ -108,7 +115,7 @@ const Cart = () => {
 											<TableCell align="right">${item.price}</TableCell>
 											<TableCell align="right">
 												<Button
-												onClick={() => remove(item)}
+													onClick={() => remove(item)}
 													variant="contained"
 													color="secondary"
 												>
@@ -132,7 +139,12 @@ const Cart = () => {
 									</Typography>
 								</ListItem>
 								<ListItem>
-									<Button variant="contained" color="primary" fullWidth>
+									<Button
+										onClick={checkoutHandler}
+										variant="contained"
+										color="primary"
+										fullWidth
+									>
 										Check Out
 									</Button>
 								</ListItem>
