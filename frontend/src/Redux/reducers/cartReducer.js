@@ -1,5 +1,6 @@
 import {
 	ADD_TO_CART,
+	CART_EMPTY,
 	REDUCE_QUANTITY,
 	REMOVE_FROM_CART,
 	SAVE_SHIPPING_INFO,
@@ -20,6 +21,8 @@ const carttReducer = (
 		
 		case SAVE_SHIPPING_INFO:
 			return {...state, shippingInfo: action.payload}
+		case CART_EMPTY: 
+		return {...state, cartItems: []}
 		default:
 			return state;
 	}

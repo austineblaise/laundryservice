@@ -71,19 +71,17 @@ const Checkout = () => {
 	let history = useHistory();
 	const { shippingInfo } = useSelector((state) => state.cart);
 
-	const [collectionDate, setCollectionDate] = useState(
-		shippingInfo.collectionDate
-	);
-	const [fullName, setFullName] = useState(shippingInfo.fullName);
-	const [email, setEmail] = useState(shippingInfo.email);
-	const [phoneNo, setPhoneNo] = useState(shippingInfo.phoneNo);
-	const [address, setAddress] = useState(shippingInfo.address);
-	const [city, setCity] = useState(shippingInfo.city);
+	const [collectionDate, setCollectionDate] = useState(shippingInfo?.collectionDate);
+	const [fullName, setFullName] = useState(shippingInfo?.fullName);
+	const [email, setEmail] = useState(shippingInfo?.email);
+	const [phoneNo, setPhoneNo] = useState(shippingInfo?.phoneNo);
+	const [address, setAddress] = useState(shippingInfo?.address);
+	const [city, setCity] = useState(shippingInfo?.city);
 
 	const submitHandler = (e) => {
 		e.preventDefault();
 		dispatch(saveShippingInfo({ collectionDate,fullName, email, phoneNo, address, city }));
-		history.push("/confirm");
+		history.push("/placeorder");
 	};
 	   
 	

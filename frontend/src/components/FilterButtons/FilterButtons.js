@@ -23,7 +23,8 @@ const useStyles = makeStyles((theme) => ({
 
       {
         buttons.map((category,i)=>{
-          return  <Button variant="outlined" color="primary" onClick={() =>filterItem(category)}>
+          return  <Button variant="outlined" key={i}
+          keycolor="primary" onClick={() =>filterItem(category)}>
                {category}
         </Button>
         })

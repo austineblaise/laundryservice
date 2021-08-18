@@ -7,6 +7,7 @@ import userRouter from "./routes/users.js";
 import products from "./routes/product.js";
 // import data from "./data.js";
 import productRouter from "./routes/product.js";
+import orderRouter from "./routes/order.js";
 // import dotenv from "dotenv";
 
 const app = express();
@@ -19,6 +20,7 @@ app.use(cors());
 
 app.use("/user", userRouter);
 app.use("/api/products", productRouter);
+app.use("/api/orders", orderRouter);
 
 const CONNECTION_URL =
 	"mongodb+srv://laundrymasters:laundry1991@cluster0.jtbv8.mongodb.net/laundrymasters?retryWrites=true&w=majority";

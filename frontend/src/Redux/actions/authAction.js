@@ -7,7 +7,7 @@ export const signin = (formData, router) => async (dispatch) => {
     const { data } = await api.signIn(formData);
 
     dispatch({ type: AUTH, data });
-
+    localStorage.setItem('authData', JSON.stringify(data));
     router.push('/selectionpage');
   } catch (error) {
     console.log(error);

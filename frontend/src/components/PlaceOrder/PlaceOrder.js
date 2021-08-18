@@ -26,19 +26,23 @@ import axios from "axios";
 import useStyles from "../AnotherStyle/Styles";
 // import useStyles from ".."
 import CheckoutWizard from "../CheckoutWizard/CheckoutWizard";
-
-
+import { createOrder } from "../../Redux/actions/orderActions";
+import { ORDER_CREATE_RESET } from "../../Redux/constants/orderConstants";
+import LoadingBox from "../LoadingBox/LoadingBox";
 
 function PlaceOrder() {
 	const classes = useStyles();
-    const dispatch = useDispatch();
+	const dispatch = useDispatch();
 	let history = useHistory();
 
 	const cart = useSelector((state) => state.cart);
 
-    const { cartItems } = cart;
-    
-    const {shippingInfo} = useSelector(state=>state.cart)
+	const { cartItems } = cart;
+
+	const { shippingInfo } = useSelector((state) => state.cart);
+
+	const orderCreate = useSelector((state) => state.orderCreate);
+	const { loading, success, error, order } = orderCreate;
 
 	//   const {
 	//     userInfo,
@@ -53,51 +57,30 @@ function PlaceOrder() {
 	const taxPrice = round2(itemsPrice * 0.15);
 	const totalPrice = round2(itemsPrice + shippingPrice + taxPrice);
 
+	const placeOrderHandler = () => {
+		dispatch(createOrder({ ...cart, orderItems: cart.cartItems }));
+	};
+
+	// useEffect(() => {
+	// 	// if (!paymentMethod) {
+	// 	//   history.push('/payment');
+	// 	// }
+	// 	if (cartItems.length === 0) {
+	// 		history.push("/cart");
+	// 	}
+	// }, [dispatch, cartItems.length, history]);
+
 	useEffect(() => {
-		// if (!paymentMethod) {
-		//   history.push('/payment');
-		// }
-		if (cartItems.length === 0) {
-			history.push("/cart");
+		if (success) {
+			// history.push(`/order/${order._id}`);
+			history.push('/cart');
+			dispatch(createOrder({ type: ORDER_CREATE_RESET }));
 		}
-	}, []);
-	// const { closeSnackbar, enqueueSnackbar } = useSnackbar();
-	// const [loading, setLoading] = useState(false);
-
-	//   const placeOrderHandler = async () => {
-	//     closeSnackbar();
-	//     try {
-	//       setLoading(true);
-	//       const { data } = await axios.post(
-	//         '/api/orders',
-	//         {
-	//           orderItems: cartItems,
-	//           shippingAddress,
-	//           paymentMethod,
-	//           itemsPrice,
-	//           shippingPrice,
-	//           taxPrice,
-	//           totalPrice,
-	//         },
-	//         {
-	//           headers: {
-	//             authorization: `Bearer ${userInfo.token}`,
-	//           },
-	//         }
-
-	//       );
-	//       dispatch({ type: 'CART_CLEAR' });
-	//       Cookies.remove('cartItems');
-	//       setLoading(false);
-	//       router.push(`/order/${data._id}`);
-	//     } catch (err) {
-	//       setLoading(false);
-	//       enqueueSnackbar(getError(err), { variant: 'error' });
-	//     }
-	//   };
+	}, [dispatch,  history, success, order]);
+	
 	return (
 		<div>
-				<CheckoutWizard activeStep={2} />
+			<CheckoutWizard activeStep={2} />
 			{/* <CheckoutWizard activeStep={3}></CheckoutWizard> */}
 			<Typography component="h4" variant="h4">
 				Place Order
@@ -152,22 +135,20 @@ function PlaceOrder() {
 												<TableRow key={item._id}>
 													<TableCell>
 														{/* <NextLink href={`/product/${item.slug}`} passHref> */}
-															<Link>
-                                                            <ListItemAvatar>
-														<Avatar>
-															<ImageIcon />
-														</Avatar>
-													</ListItemAvatar>
-															</Link>
+														<Link>
+															<ListItemAvatar>
+																<Avatar>
+																	<ImageIcon />
+																</Avatar>
+															</ListItemAvatar>
+														</Link>
 														{/* </NextLink> */}
 													</TableCell>
 
 													<TableCell>
-														
-															<Link>
-																<Typography>{item.name}</Typography>
-															</Link>
-													
+														<Link>
+															<Typography>{item.name}</Typography>
+														</Link>
 													</TableCell>
 													<TableCell align="right">
 														<Typography>{item.count}</Typography>
@@ -237,12 +218,17 @@ function PlaceOrder() {
 							<ListItem>
 								<Button
 									// onClick={placeOrderHandler}
+									onClick={placeOrderHandler }
 									variant="contained"
 									color="primary"
 									fullWidth
 								>
 									Place Order
 								</Button>
+
+								{loading && <LoadingBox />}
+
+								{error && <div>{error}</div>}
 							</ListItem>
 							{/* {loading && (
 								<ListItem>
