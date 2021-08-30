@@ -27,7 +27,7 @@ import useStyles from "../AnotherStyle/Styles";
 // import useStyles from ".."
 import CheckoutWizard from "../CheckoutWizard/CheckoutWizard";
 import { createOrder } from "../../Redux/actions/orderActions";
-import { ORDER_CREATE_RESET } from "../../Redux/constants/orderConstants";
+import { CLEAR_ORDER, ORDER_CREATE_RESET } from "../../Redux/constants/orderConstants";
 import LoadingBox from "../LoadingBox/LoadingBox";
 
 function PlaceOrder() {
@@ -53,30 +53,25 @@ function PlaceOrder() {
 	const itemsPrice = round2(
 		cartItems.reduce((a, c) => a + c.price * c.count, 0)
 	);
-	const shippingPrice = itemsPrice > 200 ? 0 : 15;
-	const taxPrice = round2(itemsPrice * 0.15);
-	const totalPrice = round2(itemsPrice + shippingPrice + taxPrice);
+	// const shippingPrice = itemsPrice > 200 ? 0 : 15;
+	// const taxPrice = round2(itemsPrice * 0.15);
+	const totalPrice = round2(itemsPrice);
 
 	const placeOrderHandler = () => {
-		dispatch(createOrder({ ...cart, orderItems: cart.cartItems }));
+		dispatch(createOrder({ ...cart, orderItems: cart.cartItems, totalPrice}));
 	};
 
 	// useEffect(() => {
 	// 	// if (!paymentMethod) {
 	// 	//   history.push('/payment');
+	//if 
 	// 	// }
 	// 	if (cartItems.length === 0) {
 	// 		history.push("/cart");
 	// 	}
 	// }, [dispatch, cartItems.length, history]);
 
-	useEffect(() => {
-		if (success) {
-			// history.push(`/order/${order._id}`);
-			history.push('/cart');
-			dispatch(createOrder({ type: ORDER_CREATE_RESET }));
-		}
-	}, [dispatch,  history, success, order]);
+	// 
 	
 	return (
 		<div>
@@ -96,7 +91,7 @@ function PlaceOrder() {
 								</Typography>
 							</ListItem>
 							<ListItem>
-								{shippingInfo.fullName}, {shippingInfo.email},{" "}
+							{shippingInfo.collectionDate},{shippingInfo.fullName}, {shippingInfo.email},{" "}
 								{shippingInfo.phoneNo}, {shippingInfo.address},{" "}
 								{shippingInfo.city}
 							</ListItem>
@@ -105,7 +100,7 @@ function PlaceOrder() {
 					<Card className={classes.section}>
 						<List>
 							<ListItem>
-								<Typography component="h4" variant="h4">
+								<Typography component="h6" variant="h6">
 									Payment Method
 								</Typography>
 							</ListItem>
@@ -115,8 +110,8 @@ function PlaceOrder() {
 					<Card className={classes.section}>
 						<List>
 							<ListItem>
-								<Typography component="h4" variant="h4">
-									Order Items
+								<Typography component="h6" variant="h6">
+									Order Items { order && order._id}
 								</Typography>
 							</ListItem>
 							<ListItem>
@@ -169,7 +164,7 @@ function PlaceOrder() {
 					<Card className={classes.section}>
 						<List>
 							<ListItem>
-								<Typography variant="h2">Order Summary</Typography>
+								<Typography variant="h5">Order Summary</Typography>
 							</ListItem>
 							<ListItem>
 								<Grid container>
@@ -181,7 +176,7 @@ function PlaceOrder() {
 									</Grid>
 								</Grid>
 							</ListItem>
-							<ListItem>
+							{/* <ListItem>
 								<Grid container>
 									<Grid item xs={6}>
 										<Typography>Tax:</Typography>
@@ -190,8 +185,8 @@ function PlaceOrder() {
 										<Typography align="right">${taxPrice}</Typography>
 									</Grid>
 								</Grid>
-							</ListItem>
-							<ListItem>
+							</ListItem> */}
+							{/* <ListItem>
 								<Grid container>
 									<Grid item xs={6}>
 										<Typography>Shipping:</Typography>
@@ -200,7 +195,7 @@ function PlaceOrder() {
 										<Typography align="right">${shippingPrice}</Typography>
 									</Grid>
 								</Grid>
-							</ListItem>
+							</ListItem> */}
 							<ListItem>
 								<Grid container>
 									<Grid item xs={6}>

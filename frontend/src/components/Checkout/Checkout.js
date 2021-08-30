@@ -69,6 +69,12 @@ const Checkout = () => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	let history = useHistory();
+
+    const userSignin = useSelector((state) => state.auth);
+
+    const {  authData } = userSignin;
+
+
 	const { shippingInfo } = useSelector((state) => state.cart);
 
 	const [collectionDate, setCollectionDate] = useState(shippingInfo?.collectionDate);
@@ -77,6 +83,12 @@ const Checkout = () => {
 	const [phoneNo, setPhoneNo] = useState(shippingInfo?.phoneNo);
 	const [address, setAddress] = useState(shippingInfo?.address);
 	const [city, setCity] = useState(shippingInfo?.city);
+
+
+
+	// if(!authData ) {
+	// 	history.push('/auth');
+	//   }
 
 	const submitHandler = (e) => {
 		e.preventDefault();
@@ -128,7 +140,7 @@ const Checkout = () => {
 							    
 								autoComplete="fname"
 								name="fullName"
-								variant="outlined"
+								// variant="outlined"
 								required
 								fullWidth
 								id="fullName"
@@ -140,7 +152,7 @@ const Checkout = () => {
 
 						<Grid item xs={12}>
 							<TextField
-								variant="outlined"
+								// variant="outlined"
 								required
 								fullWidth
 								id="email"
@@ -152,7 +164,7 @@ const Checkout = () => {
 						</Grid>
 						<Grid item xs={12}>
 							<TextField
-								variant="outlined"
+								// variant="outlined"
 								required
 								fullWidth
 								name="phoneNo"
@@ -166,7 +178,7 @@ const Checkout = () => {
 
 						<Grid item xs={12}>
 							<TextField
-								variant="outlined"
+								// variant="outlined"
 								required
 								fullWidth
 								name="Address"
@@ -179,7 +191,7 @@ const Checkout = () => {
 
 						<Grid item xs={12}>
 							<TextField
-								variant="outlined"
+								// variant="outlined"
 								required
 								fullWidth
 								name="city"

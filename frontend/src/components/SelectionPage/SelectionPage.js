@@ -100,6 +100,7 @@ const SelectionPage = ({ match }) => {
 	const addToCarto = (product) => {
 		dispatch(addToCart(product));
 	};
+	
 
 	const remove = (product) => {
 		dispatch(removeFromCart(product));

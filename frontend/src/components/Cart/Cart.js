@@ -56,9 +56,13 @@ const Cart = () => {
 
 	const checkoutHandler = () => {
 		history.push("/checkout");
+		// history.push('/auth?redirect=checkout');
 	};
 
+	
+
 	//  onClick={checkoutHandler}
+
 	return (
 		<div style={{ minHeight: "100vh" }}>
 			<SelectionNavbar />

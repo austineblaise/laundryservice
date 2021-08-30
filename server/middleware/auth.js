@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 
 const secret = "test";
 
-const auth = async (req, res, next) => {
+export const auth = async (req, res, next) => {
 	try {
 		const token = req.headers.authorization.split(" ")[1];
 		// const token = authorization.slice(7, authorization.length); 
@@ -26,4 +26,5 @@ const auth = async (req, res, next) => {
 	}
 };
 
-export default auth;
+// export default auth;
+

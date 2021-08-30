@@ -25,6 +25,7 @@ import Checkout from "./components/Checkout/Checkout";
 import DatePickers from "./components/DatePicker/DatePicker";
 import PlaceOrder from "./components/PlaceOrder/PlaceOrder";
 import FilterButtons from "./components/FilterButtons/FilterButtons";
+import OrderScreen from "./components/OrderScreen/OrderScreen";
 
 function App() {
 	return (
@@ -125,6 +126,11 @@ function App() {
 					<Route path="/filterbuttons">
 					<FilterButtons />
 					</Route>
+
+					<Route path="/order/:id">
+					<OrderScreen />
+					</Route>
+					
 					
 				{/* FilterButtons */}
 

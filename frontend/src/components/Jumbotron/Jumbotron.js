@@ -11,7 +11,7 @@ const Jumbotron = () => {
         <div className="col-lg-6 intro-info order-lg-first order-last" data-aos="zoom-in" data-aos-delay={100}>
           <h2>Dry clean <span>UNLIMITED</span> number of your dirty laundry Weekly <span> at no extra cost </span></h2>
           <div>
-            <Link to="/selectionpage" className="btn-get-started scrollto">Get Started</Link>
+            <Link to="/selectionpage" className="btn-get-started scrollto">Schedule a pick up</Link>
           </div>
         </div>
         <div className="col-lg-6 intro-img order-lg-last order-first" data-aos="zoom-out" data-aos-delay={200}>
