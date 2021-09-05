@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useSnackbar } from "notistack";
+import { Controller, useForm } from "react-hook-form";
+
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+import { makeStyles } from "@material-ui/core/styles";
 import {
 	Avatar,
 	Button,
@@ -11,7 +17,6 @@ import {
 import { useHistory } from "react-router-dom";
 import { GoogleLogin } from "react-google-login";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-
 import Icon from "./icon";
 // import { signin, signup } from "../../actions/auth";
 // import { AUTH } from "../../constants/actionTypes";
@@ -19,6 +24,21 @@ import useStyles from "./styles";
 import Input from "./Input";
 import { AUTH } from "../../Redux/constants/cardConstant";
 import { signin, signup } from "../../Redux/actions/authAction";
+import { ToastContainer, toast, Zoom, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+function Alert(props) {
+	return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+//   const useStyles = makeStyles((theme) => ({
+// 	root: {
+// 	  width: '100%',
+// 	  '& > * + *': {
+// 		marginTop: theme.spacing(2),
+// 	  },
+// 	},
+//   }));
 
 const initialState = {
 	firstName: "",
@@ -29,6 +49,7 @@ const initialState = {
 };
 
 const SignUp = () => {
+	// const [open, setOpen] = React.useState(false);
 	const [form, setForm] = useState(initialState);
 	const [isSignup, setIsSignup] = useState(false);
 	const dispatch = useDispatch();
@@ -37,6 +58,14 @@ const SignUp = () => {
 
 	const [showPassword, setShowPassword] = useState(false);
 	const handleShowPassword = () => setShowPassword(!showPassword);
+
+	const userRegister = useSelector((state) => state.auth);
+	const { authData, loading, error } = userRegister;
+
+	// toast.error("Oh No Error");
+	// toast.success("you succeeded");
+	// toast.info("you have a message");
+	// toast.warn("you  have been warned");
 
 	const switchMode = () => {
 		setForm(initialState);
@@ -64,6 +93,7 @@ const SignUp = () => {
 			history.push("/selectionpage");
 		} catch (error) {
 			console.log(error);
+			// <Alert severity="error">{error}</Alert>
 		}
 	};
 
@@ -73,96 +103,136 @@ const SignUp = () => {
 	const handleChange = (e) =>
 		setForm({ ...form, [e.target.name]: e.target.value });
 
+	// const handleClick = () => {
+	// 	setOpen(true);
+	// };
+
+	// const handleClose = (event, reason) => {
+	// 	if (reason === "clickaway") {
+	// 		return;
+	// 	}
+
+	// 	setOpen(false);
+	// };
+
+	// const successToast = () => {
+	// 	toast("success custom Toast", {
+	// 		className: "custom-toast",
+	// 		draggable: true,
+	// 		position: toast.POSITION.BOTTOM_CENTER,
+	// 	});
+	// };
+
 	return (
-		<Container component="main" maxWidth="xs">
-			<Paper className={classes.paper} elevation={3}>
-				<Avatar className={classes.avatar}>
-					<LockOutlinedIcon />
-				</Avatar>
-				<Typography component="h1" variant="h5">
-					{isSignup ? "Sign up" : "Sign in"}
-				</Typography>
-				<form className={classes.form} onSubmit={handleSubmit}>
-					<Grid container spacing={2}>
-						{isSignup && (
-							<>
-								<Input
-									name="firstName"
-									label="First Name"
-									handleChange={handleChange}
-									autoFocus
-									half
-								/>
-								<Input
-									name="lastName"
-									label="Last Name"
-									handleChange={handleChange}
-									half
-								/>
-							</>
-						)}
-						<Input
-							name="email"
-							label="Email Address"
-							handleChange={handleChange}
-							type="email"
-						/>
-						<Input
-							name="password"
-							label="Password"
-							handleChange={handleChange}
-							type={showPassword ? "text" : "password"}
-							handleShowPassword={handleShowPassword}
-						/>
-						{isSignup && (
+		<>
+			{/* <ToastContainer draggable={false} transition={Zoom} autoClose={8000} /> */}
+			<Container component="main" maxWidth="xs">
+				<Paper className={classes.paper} elevation={3}>
+					<Avatar className={classes.avatar}>
+						<LockOutlinedIcon />
+					</Avatar>
+					<Typography component="h1" variant="h5">
+						{isSignup ? "Sign up" : "Sign in"}
+					</Typography>
+
+					{error && (
+						<>
+						   {/* toast({error}, {
+							   className: "error-toast",
+							   draggable: true,
+							   position: toast.POSITION.TOP_CENTER
+
+						
+						   }) */}
+
+						   {/* toast.error({error}) */}
+						    
+							
+							<div>{error}</div>
+						</>
+					)}
+					<form className={classes.form} onSubmit={handleSubmit}>
+						<Grid container spacing={2}>
+							{isSignup && (
+								<>
+									<Input
+										name="firstName"
+										label="First Name"
+										handleChange={handleChange}
+										autoFocus
+										half
+									/>
+									<Input
+										name="lastName"
+										label="Last Name"
+										handleChange={handleChange}
+										half
+									/>
+								</>
+							)}
 							<Input
-								name="confirmPassword"
-								label="Repeat Password"
+								name="email"
+								label="Email Address"
 								handleChange={handleChange}
-								type="password"
+								type="email"
 							/>
-						)}
-					</Grid>
-					<Button
-						type="submit"
-						fullWidth
-						variant="contained"
-						color="primary"
-						className={classes.submit}
-					>
-						{isSignup ? "Sign Up" : "Sign In"}
-					</Button>
-					<GoogleLogin
-						clientId="683070606851-kmo0o3ct2b8gj4v3ipr6bhgu12km809c.apps.googleusercontent.com"
-						render={(renderProps) => (
-							<Button
-								className={classes.googleButton}
-								color="primary"
-								fullWidth
-								onClick={renderProps.onClick}
-								disabled={renderProps.disabled}
-								startIcon={<Icon />}
-								variant="contained"
-							>
-								Google Sign In
-							</Button>
-						)}
-						onSuccess={googleSuccess}
-						onFailure={googleError}
-						cookiePolicy="single_host_origin"
-					/>
-					<Grid container justify="flex-end">
-						<Grid item>
-							<Button onClick={switchMode}>
-								{isSignup
-									? "Already have an account? Sign in"
-									: "Don't have an account? Sign Up"}
-							</Button>
+							<Input
+								name="password"
+								label="Password"
+								handleChange={handleChange}
+								type={showPassword ? "text" : "password"}
+								handleShowPassword={handleShowPassword}
+							/>
+							{isSignup && (
+								<Input
+									name="confirmPassword"
+									label="Repeat Password"
+									handleChange={handleChange}
+									type="password"
+								/>
+							)}
 						</Grid>
-					</Grid>
-				</form>
-			</Paper>
-		</Container>
+						<Button
+							type="submit"
+							fullWidth
+							variant="contained"
+							color="primary"
+							className={classes.submit}
+						>
+							{isSignup ? "Sign Up" : "Sign In"}
+						</Button>
+						<GoogleLogin
+							clientId="683070606851-kmo0o3ct2b8gj4v3ipr6bhgu12km809c.apps.googleusercontent.com"
+							render={(renderProps) => (
+								<Button
+									className={classes.googleButton}
+									color="primary"
+									fullWidth
+									onClick={renderProps.onClick}
+									disabled={renderProps.disabled}
+									startIcon={<Icon />}
+									variant="contained"
+								>
+									Google Sign In
+								</Button>
+							)}
+							onSuccess={googleSuccess}
+							onFailure={googleError}
+							cookiePolicy="single_host_origin"
+						/>
+						<Grid container justify="flex-end">
+							<Grid item>
+								<Button onClick={switchMode}>
+									{isSignup
+										? "Already have an account? Sign in"
+										: "Don't have an account? Sign Up"}
+								</Button>
+							</Grid>
+						</Grid>
+					</form>
+				</Paper>
+			</Container>
+		</>
 	);
 };
 

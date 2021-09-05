@@ -26,10 +26,13 @@ import DatePickers from "./components/DatePicker/DatePicker";
 import PlaceOrder from "./components/PlaceOrder/PlaceOrder";
 import FilterButtons from "./components/FilterButtons/FilterButtons";
 import OrderScreen from "./components/OrderScreen/OrderScreen";
+import { ToastContainer, toast, Zoom, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
 	return (
 		<Router>
+			<ToastContainer draggable={false} transition={Zoom} autoClose={3000} />
 			<div className="App">
 				<Switch>
 					<Route exact path="/">

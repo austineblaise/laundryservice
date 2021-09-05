@@ -6,6 +6,9 @@ import {
 } from "../constants/cartConstants";
 import axios from "axios";
 
+import { ToastContainer, toast, Zoom, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 export const addToCart = (product) => (dispatch, getState) => {
 	// const { data } = await axios.get(`/api/products/${productId}`)
 
@@ -30,10 +33,18 @@ export const addToCart = (product) => (dispatch, getState) => {
 		if (x._id === product._id) {
 			alreadyExists = true;
 			x.count++;
+
+			toast.info(`increased ${product.name} Cart Quantity`, {
+				position: 'bottom-left'
+			})
+
 		}
 	});
 	if (!alreadyExists) {
 		cartItems.push({ ...product, count: 1 });
+		toast.success(`${product.name} added to cart`, {
+			position: 'bottom-left'
+		})
 	}
 	dispatch({
 		type: ADD_TO_CART,

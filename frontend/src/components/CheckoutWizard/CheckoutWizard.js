@@ -10,7 +10,7 @@ import React from 'react';
       activeStep={activeStep}
       alternativeLabel
     >
-      {['Login', 'Shipping Address', 'Payment Method', 'Place Order'].map(
+      {['Login', 'Shipping Address', 'Comfirm Order', 'Success'].map(
         (step) => (
           <Step key={step}>
             <StepLabel>{step}</StepLabel>

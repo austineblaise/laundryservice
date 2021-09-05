@@ -1,4 +1,5 @@
 import axios from "axios";
+import { AUTH_FAIL } from "../constants/cardConstant";
 import { CART_EMPTY } from "../constants/cartConstants";
 import {
 	CLEAR_ORDER,
@@ -61,7 +62,7 @@ export const getOrderDetails = (orderId) => async (dispatch, getState) => {
 			error.response && error.response.data.message
 				? error.response.data.message
 				: error.message;
-		dispatch({ type: ORDER_DETAILS_FAIL, payload: message });
+		dispatch({ type: AUTH_FAIL, payload: message });
 	}
 };
 
@@ -73,6 +74,7 @@ export const clearOrder = () => (dispatch) => {
 // 	fetch("/api/orders")
 // 	  .then((res) => res.json())
 // 	  .then((data) => {
-// 		dispatch({ type: FETCH_ORDERS, payload: data });
+// 		dispatch({ type: FETCH_ORDERS, payload: data })
+// dispatch({type: CART_EMPTY })
 // 	  });
 //   };

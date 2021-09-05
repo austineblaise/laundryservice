@@ -124,7 +124,7 @@ const Checkout = () => {
 								id="collectionDate"
 								label="When would you like your pickup?"
 								type="datetime-local"
-								defaultValue="2017-05-24T10:30"
+								// defaultValue="2017-05-24T10:30"
 								className={classes.field}
 							
 								InputLabelProps={{

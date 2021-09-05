@@ -46,7 +46,7 @@ const SelectionNavbar = () => {
 		}
 
 		setUser(JSON.parse(localStorage.getItem("profile")));
-	}, [location]);
+	}, [location, user?.token]);
 
 
 	const cartHandler = () => {
@@ -85,7 +85,7 @@ const SelectionNavbar = () => {
 							{user?.result.name.charAt(0)}
 						</Avatar>
 						<Typography className={classes.userName} variant="h6">
-							{user?.result.name}
+						 Welcome, {user?.result.name}
 						</Typography>
 						<Button
 							variant="contained"

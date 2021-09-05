@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 // import {makeStyles} from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
+import Naira from 'react-naira' ;
 
 // import { Link } from 'react-router';
 
@@ -66,8 +67,8 @@ const Cart = () => {
 	return (
 		<div style={{ minHeight: "100vh" }}>
 			<SelectionNavbar />
-			<Typography component="h3" variant="h3">
-				Shopping Cart
+			<Typography component="h4" variant="h4">
+				My Cart
 			</Typography>
 			{cartItems.length === 0 ? (
 				<div>
@@ -82,9 +83,9 @@ const Cart = () => {
 									<TableRow>
 										<TableCell>Image</TableCell>
 										<TableCell>Name</TableCell>
-										<TableCell align="right">Quantity</TableCell>
-										<TableCell align="right">Price</TableCell>
-										<TableCell align="right">Action</TableCell>
+										<TableCell align="center">Quantity</TableCell>
+										<TableCell align="center">Price</TableCell>
+										<TableCell align="center">Action</TableCell>
 									</TableRow>
 								</TableHead>
 								<TableBody>
@@ -101,9 +102,9 @@ const Cart = () => {
 											</TableCell>
 
 											<TableCell>
-												<Link>
-													<Typography>{item.name}</Typography>
-												</Link>
+												
+													<Typography style={{ color: "#151E3D" }}>{item.name}</Typography>
+												
 											</TableCell>
 											<TableCell align="right">
 												{/* <Select value={item.quantity}>
@@ -116,7 +117,7 @@ const Cart = () => {
 
 												{item.count}
 											</TableCell>
-											<TableCell align="right">${item.price}</TableCell>
+											<TableCell align="right" style={{ color: "tomato" }}><Naira>{item.price}</Naira></TableCell>
 											<TableCell align="right">
 												<Button
 													onClick={() => remove(item)}
@@ -135,11 +136,11 @@ const Cart = () => {
 					<Grid md={3} xs={12}>
 						<Card>
 							<List>
-								<ListItem>
-									<Typography variant="h5">
+								<ListItem >
+									<Typography  variant="h5"  >
 										Subtotal ({cartItems.reduce((a, c) => a + c.count, 0)}{" "}
-										items) : $
-										{cartItems.reduce((a, c) => a + c.count * c.price, 0)}
+										items) : N
+										{cartItems.reduce((a, c) => a + c.count * c.price, 0)} 
 									</Typography>
 								</ListItem>
 								<ListItem>

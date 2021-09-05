@@ -31,6 +31,15 @@ import ImageIcon from "@material-ui/icons/Image";
 import { green } from "@material-ui/core/colors";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+
+import ButtonGroup from "@material-ui/core/ButtonGroup";
+import DeleteIcon from "@material-ui/icons/Delete";
+import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
+
+// import { makeStyles } from '@material-ui/core/styles';
+
+import Naira from "react-naira";
+
 import {
 	addToCart,
 	reduceQuantity,
@@ -38,7 +47,38 @@ import {
 } from "../../Redux/actions/addremovecart";
 import FilterButtons from "../FilterButtons/FilterButtons";
 
+const buttons = [
+	{
+		name: "All",
+		value: "all",
+	},
+	{
+		name: "Gentlemen",
+		value: "gentlemen",
+	},
+	{
+		name: " Ladies",
+		value: "ladies",
+	},
+	{
+		name: "Native",
+		value: "native",
+	},
+
+	{
+		name: "Others",
+		value: "others",
+	},
+];
+
 const useStyles = makeStyles((theme) => ({
+	margin: {
+		margin: theme.spacing(0.5),
+	},
+	extendedIcon: {
+		marginRight: theme.spacing(0.5),
+	},
+
 	listItem: {
 		padding: theme.spacing(1, 0),
 	},
@@ -86,71 +126,101 @@ const SelectionPage = ({ match }) => {
 
 	const { loading, error, products, count } = productList;
 
-	const [items, setItems] = useState(products);
+	const [myValue, setValue] = useState('');
 
-	const allCategoris = ["All", ...new Set(items.map((item) => item.category))];
-	console.table(allCategoris);
+	
+	const filterPokemon = (pokeType) => {
+		let filtredPokemon = products.filter((type) => type.category === pokeType);
+		return filtredPokemon;
+	};
 
-	const [buttons, setButtons] = useState(allCategoris);
-
-	// const cart = useSelector((state) => state.cart);
-
-	// const { cartItems, count } = cart;
+	const [filtredPokemon, setFiltredPokemon] = useState(null);
 
 	const addToCarto = (product) => {
 		dispatch(addToCart(product));
 	};
-	
 
 	const remove = (product) => {
 		dispatch(removeFromCart(product));
 	};
 
-	const filterItem = (categItem) => {
-		if (categItem === "All") {
-			setItems(products);
-			return;
-		}
-
-		const updatedItem = products.filter((curElem) => {
-			return curElem.category === categItem;
-		});
-
-		setItems(updatedItem);
-	};
-
-	// const handleBtns =(e)=>{
-	// 	let productCopy;
-
-	// 	if(e.target.value === "All"){
-	// 		productCopy = products
-	// 	}
-	// 	else{
-	// 		productCopy = products.filter(item => item.category === e.target.value)
-	// 	}
-
-	// 	setProductCopy(productCopy)
-
-	// }
-
 	useEffect(() => {
 		dispatch(listProducts());
 	}, [dispatch]);
 
+	useEffect(() => {
+		setFiltredPokemon(products);
+	}, [products]);
+
+	const handlePokemon = (e) => {
+		let typePokemon = e.target.value;
+		typePokemon !== "all"
+			? setFiltredPokemon(filterPokemon(typePokemon))
+			: setFiltredPokemon(products);
+	};
+
 	// useEffect(() => {
 	// 	dispatch(  addToCart());
+	// dispatch(addToCart)
 	// }, [dispatch]);
 
 	return (
 		<React.Fragment>
 			<SelectionNavbar />
-			<FilterButtons
-				buttons={buttons}
-				filterItem={filterItem}
-				products={products}
-				items={items}
-				allCategoris={allCategoris}
-			/>
+			{/* <FilterButtons products={products} items={items}  handlePokemon={ handlePokemon}/> */}
+
+			{/* <button type="button" class="btn btn-primary btn-sm">Small button</button>
+             <button type="button" class="btn btn-secondary btn-sm">Small button</button>
+			 <button type="button" class="btn btn-primary btn-sm">Small button</button>
+             <button type="button" class="btn btn-secondary btn-sm">Small button</button>
+			 <button type="button" class="btn btn-primary btn-sm">Small button</button>
+             <button type="button" class="btn btn-secondary btn-sm">Small button</button> */}
+
+
+			{/* {buttons &&
+				buttons.map((type, index) => (
+					<>
+						<button key={index} value={type.value} onClick={handlePokemon}>
+							{type.name}
+						</button>
+					</>
+				))} */}
+
+			{buttons &&
+				buttons.map((type, index) => (
+					<>
+						{/* <button key={index} value={type.value} onClick={handlePokemon}>
+							{type.name}
+						</button> */}
+
+
+					<button
+					onClick={handlePokemon}
+					value={type.value}
+					// onChange = {(e) => setValue(type.value)}
+					// variant="outlined"
+					// size="small"
+					// color="primary"
+					// className={classes.margin}
+					key={index}
+					type="button" class="btn btn-outline-dark btn-sm mt-2 mb-2"
+				>
+					{type.name}
+				</button>
+					</>
+				))}
+
+
+{/* <button value="all" type="button" class="btn btn-primary btn-sm" onClick={handlePokemon}>Small button</button>
+<button value="gentlemen" type="button" class="btn btn-primary btn-sm" onClick={handlePokemon}>Small button</button>
+<button value="ladies" type="button" class="btn btn-primary btn-sm" onClick={handlePokemon}>Small button</button>
+<button value="native" type="button" class="btn btn-primary btn-sm" onClick={handlePokemon}>Small button</button>
+<button value="others" type="button" class="btn btn-primary btn-sm" onClick={handlePokemon}>Small button</button> */}
+
+		
+
+			
+
 			<CssBaseline />
 
 			{loading ? (
@@ -165,63 +235,84 @@ const SelectionPage = ({ match }) => {
 							<Grid item xs={12}>
 								<Paper className={classes.paper}>
 									<List disablePadding>
-										{items.map((product) => (
-											<ListItem
-												divider
-												className={classes.listItem}
-												key={product.name}
-											>
-												<ListItemAvatar>
-													<Avatar>
-														<ImageIcon />
-													</Avatar>
-												</ListItemAvatar>
-												<ListItemText
-													primary={product.name}
-													secondary={product.price}
-												/>
+										{filtredPokemon &&
+											filtredPokemon.map((product) => (
+												<ListItem
+													divider
+													className={classes.listItem}
+													key={product._id}
+												>
+													<ListItemAvatar>
+														<Avatar>
+															<ImageIcon />
+														</Avatar>
+													</ListItemAvatar>
+													<ListItemText
+														primary={
+															<Typography style={{ color: "#151E3D" }}>
+																{product.name}
+															</Typography>
+														}
+														secondary={
+															<Typography
+																style={{
+																	color: "tomato",
+																	fontFamily: "monospace",
+																}}
+															>
+																<Naira>{product.price}</Naira>{" "}
+															</Typography>
+														}
+													/>
 
-												<div className={classes.buttons}>
-													{/* <Button variant="contained" size="small" color="primary">-</Button> */}
-													{/* <IconButton> */}
+													<div className={classes.buttons}>
+														{/* <Button variant="contained" size="small" color="primary">-</Button> */}
+
+														{/* <IconButton> */}
+														{/* <Typography variant="body2">
+
+														npm install --save react-naira
+
+e
+
+
+															<Button
+																variant="contained"
+																color="secondary"
+																size="small"
+																// className={classes.button}
+																// startIcon={<SaveIcon />}
+																onClick={() => remove(product)}
+																mb="50rem"
+															>
+																<DeleteForeverIcon color="danger" />
+															</Button>
+														</Typography> */}
+														{/* </IconButton> */}
+
+														<Typography className="count">
+															{/* {count.cartItems.count}  */}
+														</Typography>
+
+														{/* <IconButton>
+													<AddCircleIcon fontSize="large" color="primary"/>
+													</IconButton> */}
+													</div>
 													<Typography variant="body2">
 														<Button
 															variant="contained"
-															color="secondary"
+															color="primary"
 															size="small"
 															// className={classes.button}
 															// startIcon={<SaveIcon />}
-															onClick={() => remove(product)}
 															mb="50rem"
+															onClick={() => addToCarto(product)}
 														>
-															<DeleteForeverIcon color="danger" />
+															<AddCircleIcon />
 														</Button>
 													</Typography>
-													{/* </IconButton> */}
-
-													<Typography className="count">
-														{/* {count.cartItems.count}  */}
-													</Typography>
-
-													{/* <IconButton>
-													<AddCircleIcon fontSize="large" color="primary"/>
-													</IconButton> */}
-												</div>
-												<Typography variant="body2">
-													<Button
-														variant="contained"
-														color="primary"
-														size="small"
-														// className={classes.button}
-														// startIcon={<SaveIcon />}
-														mb="50rem"
-														onClick={() => addToCarto(product)}
-													>
-														<AddCircleIcon />
-													</Button>
-												</Typography>
-											</ListItem>
-										))}
+												</ListItem>
+											))}
 										{/* <ListItem className={classes.listItem}>
 											<ListItemText primary="Total" />
 											<Typography variant="subtitle1" className={classes.total}>

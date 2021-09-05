@@ -1,6 +1,9 @@
 // import { AUTH } from '../constants/actionTypes';
 import * as api from '../../api/index.js';
-import { AUTH } from '../constants/cardConstant.js';
+import { AUTH, AUTH_FAIL } from '../constants/cardConstant.js';
+
+import { ToastContainer, toast, Zoom, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const signin = (formData, router) => async (dispatch) => {
   try {
@@ -10,7 +13,15 @@ export const signin = (formData, router) => async (dispatch) => {
     localStorage.setItem('authData', JSON.stringify(data));
     router.push('/selectionpage');
   } catch (error) {
-    console.log(error);
+    const message =
+			error.response && error.response.data.message
+				? error.response.data.message
+        : error.message;
+        dispatch({ type: AUTH_FAIL, payload: message });
+
+        toast.error(` ${message} `, {
+          position: 'top-left'
+        })
   }
 };
 
@@ -22,8 +33,18 @@ export const signup = (formData, router) => async (dispatch) => {
 
     router.push('/');
   } catch (error) {
-    console.log(error);
+    const message =
+			error.response && error.response.data.message
+				? error.response.data.message
+        : error.message;
+        dispatch({ type: AUTH_FAIL, payload: message });
+
+        toast.error(` ${message} `, {
+          position: 'top-left'
+        })
   }
+
+
 };
 
 

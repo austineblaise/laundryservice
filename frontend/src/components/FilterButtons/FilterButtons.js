@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
- const FilterButtons = ({filterItem, products, all, items, allCategoris, buttons}) => {
+ const FilterButtons = ({filterItem, products, all, items, allCategoris, buttons, handlePokemon}) => {
   const classes = useStyles();
 
   
@@ -19,32 +19,50 @@ const useStyles = makeStyles((theme) => ({
 
 
   return (
+
+    <>
     <div position="fixed" mb={5} className={classes.root}>
 
-      {
+      {/* {
+        
         buttons.map((category,i)=>{
           return  <Button variant="outlined" key={i}
           keycolor="primary" onClick={() =>filterItem(category)}>
                {category}
         </Button>
         })
-      }
-      {/* <Button variant="outlined" onClick={() => filterItem(allCategoris) }>All</Button>
+      } */}
+
+
+{/* {buttons &&
+        buttons.map((type, index) => (
+          <>
+            <button key={index} value={type.value} onClick={handlePokemon}>
+              {type.name}
+            </button>
+          </>
+        ))} */}
+
+
+
+      <Button variant="outlined" onClick={handlePokemon} >All</Button>
       <Button variant="outlined" color="primary" >
-        GENTLEMEN
+      gentlemen
       </Button>
       
-      <Button variant="outlined"  onClick={() => filterItem('ladies')} >
-      Ladies
+      <Button variant="outlined">
+      ladies
       </Button>
-      <Button variant="outlined" color="primary"   onClick={() => filterItem('native')}>
-        NATIVE
+      <Button variant="outlined" color="primary">
+      native
       </Button>
 
-      <Button variant="outlined" color="primary"  onClick={() => filterItem('others')}>
-        OTHER ITEMS
-      </Button> */}
+      <Button variant="outlined" color="primary">
+      others
+      </Button>
     </div>
+
+    </>
   );
 }
 

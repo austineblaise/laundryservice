@@ -9,8 +9,8 @@ export default makeStyles((theme) => ({
 		flexDirection: "row",
 		justifyContent: "space-between",
 		alignItems: "center",
-    padding: "10px 50px",
-    position: "relative",
+		padding: "10px 50px",
+		position: "relative",
 		[theme.breakpoints.down("sm")]: {
 			flexDirection: "column",
 		},
@@ -50,10 +50,12 @@ export default makeStyles((theme) => ({
 	userName: {
 		display: "flex",
 		alignItems: "center",
-    textAlign: "center",
-    fontSize:"13px",
-    fontFamily: "monospace",
-    color: "blue",
+		textAlign: "center",
+		fontSize: "13px",
+		justifyContent: "center",
+		// fontFamily: "monospace",
+		color: "#00008b",
+		
 	},
 	brandContainer: {
 		display: "flex",
@@ -61,6 +63,6 @@ export default makeStyles((theme) => ({
 	},
 	purple: {
 		color: theme.palette.getContrastText(deepPurple[500]),
-		backgroundColor: deepPurple[500],
+		backgroundColor: "#00008b",
 	},
 }));
