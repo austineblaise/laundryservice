@@ -1,5 +1,11 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {
+	BrowserRouter as Router,
+	Switch,
+	Route,
+	Link,
+	Redirect,
+} from "react-router-dom";
 
 import "./App.css";
 import About from "./components/About/About";
@@ -28,15 +34,24 @@ import FilterButtons from "./components/FilterButtons/FilterButtons";
 import OrderScreen from "./components/OrderScreen/OrderScreen";
 import { ToastContainer, toast, Zoom, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 
 function App() {
+	const user = JSON.parse(localStorage.getItem("profile"));
+
+
+
+	// const { state = {} } = this.props.location;
+    // const { error } = state;
+
 	return (
 		<Router>
 			<ToastContainer draggable={false} transition={Zoom} autoClose={3000} />
 			<div className="App">
+			{/* {error &&  toast.error(`login first!!`, { position: "bottom-left" })} */}
 				<Switch>
 					<Route exact path="/">
-						<Home /> 
+						<Home />
 					</Route>
 
 					<Route path="/navbar">
@@ -104,39 +119,45 @@ function App() {
 					</Route>
 
 					<Route path="/checkoutnav">
-						<CheckoutNav/>
+						<CheckoutNav />
 					</Route>
-
 
 					<Route path="/cart">
 						<Cart />
 					</Route>
 
-					<Route path="/checkout">
+					<PrivateRoute path="/checkout">
 						<Checkout />
-					</Route>
+					</PrivateRoute>
 
+					{/* <ProtectedRoute
+						path="/checkout"
+						// loggedIn={this.state.loggedIn}
+						component={Checkout}
+					/> */}
+					{/* <Route exact path="/checkout">
+						{!user ? <Redirect to="/auth" /> :<Checkout />}
+					</Route> */}
 
+					{/* <Route path="/checkout" exact component={() => (!user ? <Auth /> : <Redirect to="/checkout" />)} /> */}
 
 					<Route path="/datepicker">
-					<DatePickers/>
+						<DatePickers />
 					</Route>
 
-                    <Route path="/placeorder">
-					< PlaceOrder />
+					<Route path="/placeorder">
+						<PlaceOrder />
 					</Route>
-					
+
 					<Route path="/filterbuttons">
-					<FilterButtons />
+						<FilterButtons />
 					</Route>
 
 					<Route path="/order/:id">
-					<OrderScreen />
+						<OrderScreen />
 					</Route>
-					
-					
-				{/* FilterButtons */}
 
+					{/* FilterButtons */}
 				</Switch>
 			</div>
 		</Router>

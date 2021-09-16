@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useSnackbar } from "notistack";
 import { Controller, useForm } from "react-hook-form";
@@ -26,6 +26,16 @@ import { AUTH } from "../../Redux/constants/cardConstant";
 import { signin, signup } from "../../Redux/actions/authAction";
 import { ToastContainer, toast, Zoom, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "./Auth.css";
+
+
+import {
+	BrowserRouter as Router,
+	Route,
+	Link,
+	Redirect,
+	useLocation
+  } from 'react-router-dom'
 
 function Alert(props) {
 	return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -49,7 +59,7 @@ const initialState = {
 };
 
 const SignUp = () => {
-	// const [open, setOpen] = React.useState(false);
+	
 	const [form, setForm] = useState(initialState);
 	const [isSignup, setIsSignup] = useState(false);
 	const dispatch = useDispatch();
@@ -62,10 +72,28 @@ const SignUp = () => {
 	const userRegister = useSelector((state) => state.auth);
 	const { authData, loading, error } = userRegister;
 
-	// toast.error("Oh No Error");
-	// toast.success("you succeeded");
-	// toast.info("you have a message");
-	// toast.warn("you  have been warned");
+
+	const { state } = useLocation()
+	const user = JSON.parse(localStorage.getItem("profile"));
+
+
+	if (user) {
+		return <Redirect to={state?.from || '/selectionpage'} />
+	  }
+
+	// const userSignin = useSelector((state) => state.auth);
+
+	// const { authData } = userSignin;
+
+
+
+	
+
+	// useEffect(() => {
+	// 	if (authData) {
+	// 	  history.push(redirect);
+	// 	}
+	//   }, [redirect, authData, history]);
 
 	const switchMode = () => {
 		setForm(initialState);
@@ -81,6 +109,10 @@ const SignUp = () => {
 		} else {
 			dispatch(signin(form, history));
 		}
+
+		
+		
+		// history.push(redirect);
 	};
 
 	const googleSuccess = async (res) => {
@@ -89,8 +121,7 @@ const SignUp = () => {
 
 		try {
 			dispatch({ type: AUTH, data: { result, token } });
-
-			history.push("/selectionpage");
+			// history.push(redirect || '/selection');
 		} catch (error) {
 			console.log(error);
 			// <Alert severity="error">{error}</Alert>
@@ -103,17 +134,7 @@ const SignUp = () => {
 	const handleChange = (e) =>
 		setForm({ ...form, [e.target.name]: e.target.value });
 
-	// const handleClick = () => {
-	// 	setOpen(true);
-	// };
 
-	// const handleClose = (event, reason) => {
-	// 	if (reason === "clickaway") {
-	// 		return;
-	// 	}
-
-	// 	setOpen(false);
-	// };
 
 	// const successToast = () => {
 	// 	toast("success custom Toast", {
@@ -125,8 +146,9 @@ const SignUp = () => {
 
 	return (
 		<>
+		<div className="back" >
 			{/* <ToastContainer draggable={false} transition={Zoom} autoClose={8000} /> */}
-			<Container component="main" maxWidth="xs">
+			<Container component="main" maxWidth="xs" >
 				<Paper className={classes.paper} elevation={3}>
 					<Avatar className={classes.avatar}>
 						<LockOutlinedIcon />
@@ -137,7 +159,7 @@ const SignUp = () => {
 
 					{error && (
 						<>
-						   {/* toast({error}, {
+							{/* toast({error}, {
 							   className: "error-toast",
 							   draggable: true,
 							   position: toast.POSITION.TOP_CENTER
@@ -145,9 +167,8 @@ const SignUp = () => {
 						
 						   }) */}
 
-						   {/* toast.error({error}) */}
-						    
-							
+							{/* toast.error({error}) */}
+
 							<div>{error}</div>
 						</>
 					)}
@@ -232,6 +253,7 @@ const SignUp = () => {
 					</form>
 				</Paper>
 			</Container>
+			</div>
 		</>
 	);
 };

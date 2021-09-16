@@ -1,10 +1,13 @@
 import {
 	ADD_TO_CART,
 	CART_EMPTY,
+	INCREASE_QUANTITY,
 	REDUCE_QUANTITY,
 	REMOVE_FROM_CART,
 	SAVE_SHIPPING_INFO,
 } from "../constants/cartConstants";
+
+import { toast } from "react-toastify";
 
 const carttReducer = (
 	state = {
@@ -20,12 +23,63 @@ const carttReducer = (
 			return { cartItems: action.payload.cartItems };
 
 		case REDUCE_QUANTITY:
-			return { cartItems: action.payload.cartItems };
+			const itemIndex = state.cartItems.findIndex(
+				(item) => item._id === action.payload._id
+			);
+
+			if (state.cartItems[itemIndex].count > 1) {
+				state.cartItems[itemIndex].count -= 1;
+
+				toast.info(`Decreased ${state.cartItems[itemIndex].name} quantity`, {
+					position: "bottom-left",
+				});
+			} else if (state.cartItems[itemIndex].count === 1) {
+				const nextCartItems = state.cartItems.filter(
+					(item) => item._id !== action.payload._id
+				);
+
+				state.cartItems = nextCartItems;
+
+				toast.error(`${state.cartItems[itemIndex].name} removed from cart`, {
+					position: "bottom-left",
+				});
+				localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+			}
+
+			return { ...state, ...action.payload.cartItems };
+
+		case INCREASE_QUANTITY:
+			const existingIndex = state.cartItems.findIndex(
+				(item) => item._id === action.payload._id
+			);
+
+			if (existingIndex >= 0) {
+				state.cartItems[existingIndex] = {
+
+					...state.cartItems[existingIndex],
+					count: state.cartItems[existingIndex].count + 1,
+				};
+				toast.info(`Increased ${state.cartItems[existingIndex].name} quantity`, {
+					position: "bottom-left",
+				});
+			} else {
+				let tempProductItem = { ...action.payload, count: 1 };
+				state.cartItems.push(tempProductItem);
+				toast.success(`${state.cartItems[existingIndex].name} added to cart`, {
+					position: "bottom-left",
+				});
+				localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+			}
+
+			return { ...state, ...action.payload.cartItems };
+			
 
 		case SAVE_SHIPPING_INFO:
 			return { ...state, shippingInfo: action.payload };
 		case CART_EMPTY:
+			
 			return { ...state, cartItems: [] };
+			
 		default:
 			return state;
 	}

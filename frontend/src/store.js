@@ -11,6 +11,9 @@ import {
 	orderDetailsReducer,
 } from "./Redux/reducers/orderReducers";
 
+// import carrrtReducer, { getTotals } from "../../Redux/cartSlice/cartSlice";
+import carrrtReducer from "./Redux/cartSlice/cartSlice";
+
 const reducer = combineReducers({
 	card: cartReducer,
 	auth: authReducer,
@@ -19,6 +22,7 @@ const reducer = combineReducers({
 	cart: carttReducer,
 	orderCreate: orderCreateReducer,
 	orderDetails: orderDetailsReducer,
+	carrt: carrrtReducer
 });
 
 // const initialState = {
