@@ -46,7 +46,14 @@ import {
 
 import { ToastContainer, toast, Zoom, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+// import {Paper} from '@mui/material';
 
+import MetaData from "../MetaData/MetaData";
+import {
+	
+	Paper
+	
+} from "@material-ui/core";
 
 // const useStyles = makeStyles({
 //     main:{
@@ -60,7 +67,7 @@ const Cart = () => {
 
 	const cart = useSelector((state) => state.cart);
 
-	const { cartItems } = cart;
+	const { cartItems, shippingInfo } = cart;
 
 	//history.push('/auth?redirect=/checkout');
 
@@ -96,76 +103,65 @@ const Cart = () => {
 	};
 
 	const checkoutHandler = () => {
-        history.push('checkout');
-    }
+		history.push("checkout");
+	};
 
 	//  onClick={checkoutHandler}
 	// 0nClick={checko}
 
 	//increaseCart
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	return (
-		<div style={{ minHeight: "100vh", overflowX: 'hidden' }}>
-			<SelectionNavbar />
-			<Typography component="h4" variant="h4">
-				My Cart
-			</Typography>
-			{cartItems.length === 0 ? (
-				<div>
-					Cart is empty. <Link to="/selectionpage">Go shopping</Link>
-				</div>
-			) : (
-				<Grid container spacing={1}>
-					<Grid item md={9} xs={12}>
-						<TableContainer>
-							<Table>
-								<TableHead>
-									<TableRow>
-										<TableCell>Image</TableCell>
-										<TableCell>Name</TableCell>
-										<TableCell align="center">Quantity</TableCell>
-										<TableCell align="center">Price</TableCell>
-										<TableCell align="center">Action</TableCell>
-									</TableRow>
-								</TableHead>
-								<TableBody>
-									{cartItems.map((item) => (
-										<TableRow key={item._id}>
-											<TableCell>
-												<Link>
-													<ListItemAvatar>
-														<Avatar>
-															<ImageIcon />
-														</Avatar>
-													</ListItemAvatar>
-												</Link>
-											</TableCell>
+		<>
+			<MetaData title={"Your Cart"} />
 
-											<TableCell>
-												<Typography style={{ color: "#151E3D" }}>
-													{item.name}
-												</Typography>
-											</TableCell>
-											<TableCell align="center">
-												{/* <Select value={item.quantity}>
+			<div className="back" style={{ minHeight: "100vh", overflowX: "hidden" }}>
+				<SelectionNavbar />
+				<Typography component="h4" variant="h4">
+					My Cart
+				</Typography>
+				{cartItems.length === 0 ? (
+					<div>
+						Cart is empty. <Link to="/selectionpage">Go shopping</Link>
+					</div>
+				) : (
+					<Grid container spacing={1}  >
+
+						
+						<Grid item md={9} xs={12}>
+							
+							<TableContainer component={Paper}>
+								
+								<Table>
+									<TableHead>
+										<TableRow>
+											<TableCell align="center">-----</TableCell>
+											<TableCell align="center">Name</TableCell>
+											<TableCell align="center">Quantity</TableCell>
+											<TableCell align="center">Price</TableCell>
+											<TableCell align="center">Action</TableCell>
+										</TableRow>
+									</TableHead>
+									<TableBody>
+										{cartItems.map((item) => (
+											<TableRow key={item._id}>
+												<TableCell align="center">
+													<Link>
+														<ListItemAvatar>
+															<Avatar >
+																<ImageIcon  />
+															</Avatar>
+														</ListItemAvatar>
+													</Link>
+												</TableCell>
+
+												<TableCell align="center">
+													<Typography style={{ color: "#151E3D" }}>
+														{item.name}
+													</Typography>
+												</TableCell>
+												<TableCell align="center">
+													{/* <Select value={item.quantity}>
 													{[...Array(item.countInStock).keys()].map((x) => (
 														<MenuItem key={x + 1} value={x + 1}>
 															{x + 1}
@@ -173,32 +169,29 @@ const Cart = () => {
 													))}
 												</Select> */}
 
-												
+													<IconButton
+														color="primary"
+														aria-label="add to shopping cart"
+														onClick={() => increase(item)}
+													>
+														<ArrowDropUpIcon />
+													</IconButton>
 
-												<IconButton
-													color="primary"
-													aria-label="add to shopping cart"
-													onClick={() => increase(item)}
-												>
-													<ArrowDropUpIcon />
-												</IconButton>
+													{item.count}
 
-												{item.count}
-
-												<IconButton
-													color="primary"
-													aria-label="add to shopping cart"
-													onClick={() => decrease(item)}
-												>
-													<ArrowDropDownIcon />
-												</IconButton>
-
-											</TableCell>
-											<TableCell align="center" style={{ color: "tomato" }}>
-												<Naira>{item.price}</Naira>
-											</TableCell>
-											<TableCell align="center">
-												{/* <Button
+													<IconButton
+														color="primary"
+														aria-label="add to shopping cart"
+														onClick={() => decrease(item)}
+													>
+														<ArrowDropDownIcon />
+													</IconButton>
+												</TableCell>
+												<TableCell align="center" style={{ color: "tomato" }}>
+													<Naira>{item.price}</Naira>
+												</TableCell>
+												<TableCell align="center">
+													{/* <Button
 													onClick={() => remove(item)}
 													variant="contained"
 													color="secondary"
@@ -206,66 +199,71 @@ const Cart = () => {
 													x
 												</Button> */}
 
-												<Button
-													variant="contained"
-													color="secondary"
-													onClick={() => remove(item)}
-													// className={classes.button}
-													startIcon={<DeleteIcon />}
-												>
-													Delete
-												</Button>
-											</TableCell>
-										</TableRow>
-									))}
-								</TableBody>
-							</Table>
-						</TableContainer>
-					</Grid>
-					<Grid md={3} xs={12}>
-						<Card>
-							<List>
-								<ListItem>
-									<Typography variant="h5">
-										Subtotal ({cartItems.reduce((a, c) => a + c.count, 0)}{" "}
-										items) : N
-										{cartItems.reduce((a, c) => a + c.count * c.price, 0)}
-									</Typography>
-								</ListItem>
-								<ListItem>
-									<Button
-										onClick={checkoutHandler}
-										variant="contained"
-										// onClick={checkoutHandler}
-										color="primary"
-										fullWidth
-									>
-										Check Out
-									</Button>
-								</ListItem>
-								<Typography onClick={handleClick} style={{ cursor: "pointer" }}>
-									Continue Shopping <AddShoppingCartIcon />
-								</Typography>
-							</List>
+													<Button
+														variant="contained"
+														color="secondary"
+														onClick={() => remove(item)}
+														// className={classes.button}
+														startIcon={<DeleteIcon />}
+													>
+														Delete
+													</Button>
+												</TableCell>
+											</TableRow>
+										))}
+									</TableBody>
+								</Table>
+							</TableContainer>
+						</Grid>
 
-							<List>
-								<ListItem>
-									<Button
-										
-										variant="contained"
-										color="secondary"
-										fullWidth
-										onClick={() => clear()}
+						
+						<Grid md={3} xs={12}>
+							<Card>
+								<List>
+									<ListItem>
+										<Typography variant="h5">
+											Subtotal ({cartItems.reduce((a, c) => a + c.count, 0)}{" "}
+											items) : N
+											{cartItems.reduce((a, c) => a + c.count * c.price, 0)}
+										</Typography>
+									</ListItem>
+									<ListItem>
+										<Button
+											onClick={checkoutHandler}
+											variant="contained"
+											// onClick={checkoutHandler}
+											color="primary"
+											fullWidth
+										>
+											Check Out
+										</Button>
+									</ListItem>
+									<Typography
+										onClick={handleClick}
+										style={{ cursor: "pointer" }}
 									>
-										Clear Cart
-									</Button>
-								</ListItem>
-							</List>
-						</Card>
+										Continue Shopping <AddShoppingCartIcon />
+									</Typography>
+								</List>
+
+								<List>
+									<ListItem>
+										<Button
+											variant="contained"
+											color="secondary"
+											fullWidth
+											onClick={() => clear()}
+										>
+											Clear Cart
+										</Button>
+									</ListItem>
+								</List>
+							</Card>
+						</Grid>
 					</Grid>
-				</Grid>
-			)}
-		</div>
+				)}
+			</div>
+		</>
 	);
 };
 

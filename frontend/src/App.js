@@ -35,20 +35,22 @@ import OrderScreen from "./components/OrderScreen/OrderScreen";
 import { ToastContainer, toast, Zoom, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
+import Protected from "./components/Protected/Protected";
+import ProtectedRoute from "./components/Protected/Protected";
+import Successpage from "./components/SuccessPage/Successpage";
+import PageNotFound from "./components/PageNotFound/PageNotFound";
 
 function App() {
 	const user = JSON.parse(localStorage.getItem("profile"));
 
-
-
 	// const { state = {} } = this.props.location;
-    // const { error } = state;
+	// const { error } = state;
 
 	return (
 		<Router>
 			<ToastContainer draggable={false} transition={Zoom} autoClose={3000} />
 			<div className="App">
-			{/* {error &&  toast.error(`login first!!`, { position: "bottom-left" })} */}
+				{/* {error &&  toast.error(`login first!!`, { position: "bottom-left" })} */}
 				<Switch>
 					<Route exact path="/">
 						<Home />
@@ -132,6 +134,7 @@ function App() {
 
 					{/* <ProtectedRoute
 						path="/checkout"
+						Successpage
 						// loggedIn={this.state.loggedIn}
 						component={Checkout}
 					/> */}
@@ -145,9 +148,13 @@ function App() {
 						<DatePickers />
 					</Route>
 
-					<Route path="/placeorder">
+					<PrivateRoute path="/placeorder">
 						<PlaceOrder />
-					</Route>
+					</PrivateRoute>
+
+					{/* <Route path="/placeorder">
+						<PlaceOrder />
+					</Route> */}
 
 					<Route path="/filterbuttons">
 						<FilterButtons />
@@ -156,6 +163,18 @@ function App() {
 					<Route path="/order/:id">
 						<OrderScreen />
 					</Route>
+
+
+                    <PrivateRoute path="/success">
+						<Successpage />
+					</PrivateRoute>
+
+
+					<Route>
+						<PageNotFound />
+					</Route>
+
+
 
 					{/* FilterButtons */}
 				</Switch>

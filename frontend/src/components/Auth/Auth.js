@@ -27,6 +27,8 @@ import { signin, signup } from "../../Redux/actions/authAction";
 import { ToastContainer, toast, Zoom, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Auth.css";
+// import Typography from "@material-ui/core/Typography";
+import Fade from 'react-reveal/Zoom';
 
 
 import {
@@ -36,6 +38,7 @@ import {
 	Redirect,
 	useLocation
   } from 'react-router-dom'
+import MetaData from "../MetaData/MetaData";
 
 function Alert(props) {
 	return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -85,8 +88,8 @@ const SignUp = () => {
 
 	// const { authData } = userSignin;
 
-
-
+    // 
+     
 	
 
 	// useEffect(() => {
@@ -111,6 +114,8 @@ const SignUp = () => {
 		}
 
 		
+
+		
 		
 		// history.push(redirect);
 	};
@@ -122,6 +127,7 @@ const SignUp = () => {
 		try {
 			dispatch({ type: AUTH, data: { result, token } });
 			// history.push(redirect || '/selection');
+			toast.success("You have successfully signed in!!!", { position: "top-left" });
 		} catch (error) {
 			console.log(error);
 			// <Alert severity="error">{error}</Alert>
@@ -129,7 +135,8 @@ const SignUp = () => {
 	};
 
 	const googleError = () =>
-		alert("Google Sign In was unsuccessful. Try again later");
+		// alert("Google Sign In was unsuccessful. Try again later");
+		toast.error("Google Sign In was unsuccessful. Try again later", { position: "top-left" });
 
 	const handleChange = (e) =>
 		setForm({ ...form, [e.target.name]: e.target.value });
@@ -146,7 +153,9 @@ const SignUp = () => {
 
 	return (
 		<>
+		<MetaData title={"signIn/signUp"} />
 		<div className="back" >
+			<Fade left cascade>
 			{/* <ToastContainer draggable={false} transition={Zoom} autoClose={8000} /> */}
 			<Container component="main" maxWidth="xs" >
 				<Paper className={classes.paper} elevation={3}>
@@ -154,7 +163,7 @@ const SignUp = () => {
 						<LockOutlinedIcon />
 					</Avatar>
 					<Typography component="h1" variant="h5">
-						{isSignup ? "Sign up" : "Sign in"}
+						{isSignup ? "Sign up" : "Sign in" }
 					</Typography>
 
 					{error && (
@@ -245,14 +254,16 @@ const SignUp = () => {
 							<Grid item>
 								<Button onClick={switchMode}>
 									{isSignup
-										? "Already have an account? Sign in"
-										: "Don't have an account? Sign Up"}
+										? <Typography >Already have an account? <span className="bl">Sign in</span></Typography> 
+										: <Typography >Don't have an account? <span  className="bl">Sign Up</span> </Typography>}
 								</Button>
 							</Grid>
 						</Grid>
 					</form>
 				</Paper>
 			</Container>
+
+			</Fade>
 			</div>
 		</>
 	);

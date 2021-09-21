@@ -5,9 +5,11 @@
 	background-size: cover;
 	height: 100vh;
     overflow-x: hidden;
+   
     /* position: fixed; */
 }
 
-.bl{
-	color: blue;
+.info {
+    color: rgb(5, 5, 54);
+    margin-left: 0.10rem;
 }

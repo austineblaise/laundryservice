@@ -22,7 +22,13 @@ import CheckoutWizard from "../CheckoutWizard/CheckoutWizard";
 import { ToastContainer, toast, Zoom, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Redirect } from "react-router-dom";
-
+import MetaData from "../MetaData/MetaData";
+import "./Checkout.css";
+import {
+	
+	Paper
+	
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -30,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",
+		padding: theme.spacing(2),
 	},
 	when: {
 		justifyContent: "spaceAround",
@@ -94,29 +101,23 @@ const Checkout = () => {
 
 	// if (!user) {
 	// 	return <Redirect to="/auth" />
-		
+
 	// }
 
 	// if (!user) {
 	// 	history.push('/auth');
 	//   }
 
-
-	
-
 	// useEffect(() => {
 	// 	if (!authData) {
 	// 		history.push('/auth?redirect=/checkout');
 	// 	  }
-		
+
 	//   }, [history, authData]);
 
 	// if (!authData) {
 	// 	history.push('/auth');
 	//   }
-
-
-	  
 
 	const submitHandler = (e) => {
 		e.preventDefault();
@@ -139,124 +140,131 @@ const Checkout = () => {
 	// }
 
 	return (
-		<Container component="main" maxWidth="xs">
-			<CheckoutWizard activeStep={1} />
-			<CssBaseline />
-			<paper className={classes.paper} elevation={12}>
-				{/* <Avatar className={classes.avatar}>
+		<>
+			<MetaData title={"Shipping Info"} />
+			<div className="back">
+				<Container  maxWidth="sm" component={Paper}>
+					<Typography component="div" style={{ backgroundColor: "white" }} elevation={12}>
+						<CheckoutWizard activeStep={1} />
+						<CssBaseline />
+						<paper className={classes.paper} >
+							{/* <Avatar className={classes.avatar}>
 					<LockOutlinedIcon />
 				</Avatar>
 				<Typography component="h1" variant="h5">
 					Shipping
 				</Typography> */}
-				<form className={classes.form} onSubmit={submitHandler}>
-					<Grid container spacing={2}>
-						{/* <DatePickers handleChange={handleChange} /> */}
+							<form className={classes.form} onSubmit={submitHandler}>
+								<Grid container spacing={2}>
+									{/* <DatePickers handleChange={handleChange} /> */}
 
-						<Grid item xs={12}>
-							<TextField
-								id="collectionDate"
-								label="When would you like your pickup?"
-								type="datetime-local"
-								// defaultValue="2017-05-24T10:30"
-								className={classes.field}
-								required
-								InputLabelProps={{
-									shrink: true,
-								}}
-								onChange={(e) => setCollectionDate(e.target.value)}
-							/>
-						</Grid>
+									<Grid item xs={12}>
+										<TextField
+											id="collectionDate"
+											label="When would you like your pickup?"
+											type="datetime-local"
+											// defaultValue="2017-05-24T10:30"
+											className={classes.field}
+											required
+											InputLabelProps={{
+												shrink: true,
+											}}
+											onChange={(e) => setCollectionDate(e.target.value)}
+										/>
+									</Grid>
 
-						<Grid item xs={12}>
-							<TextField
-								autoComplete="fname"
-								name="fullName"
-								// variant="outlined"
-								required
-								fullWidth
-								id="fullName"
-								label="Full Name"
-								onChange={(e) => setFullName(e.target.value)}
-								autoFocus
-							/>
-						</Grid>
+									<Grid item xs={12}>
+										<TextField
+											autoComplete="fname"
+											name="fullName"
+											// variant="outlined"
+											required
+											fullWidth
+											id="fullName"
+											label="Full Name"
+											onChange={(e) => setFullName(e.target.value)}
+											autoFocus
+										/>
+									</Grid>
 
-						<Grid item xs={12}>
-							<TextField
-								// variant="outlined"
-								required
-								fullWidth
-								id="email"
-								label="Email Address"
-								name="email"
-								onChange={(e) => setEmail(e.target.value)}
-								type="email"
-								autoComplete="email"
-							/>
-						</Grid>
-						<Grid item xs={12}>
-							<TextField
-								// variant="outlined"
-								required
-								fullWidth
-								name="phoneNo"
-								label="Phone Number"
-								type="number"
-								id="phoneNo"
-								onChange={(e) => setPhoneNo(e.target.value)}
-								autoFocus
-							/>
-						</Grid>
+									<Grid item xs={12}>
+										<TextField
+											// variant="outlined"
+											required
+											fullWidth
+											id="email"
+											label="Email Address"
+											name="email"
+											onChange={(e) => setEmail(e.target.value)}
+											type="email"
+											autoComplete="email"
+										/>
+									</Grid>
+									<Grid item xs={12}>
+										<TextField
+											// variant="outlined"
+											required
+											fullWidth
+											name="phoneNo"
+											label="Phone Number"
+											type="number"
+											id="phoneNo"
+											onChange={(e) => setPhoneNo(e.target.value)}
+											autoFocus
+										/>
+									</Grid>
 
-						<Grid item xs={12}>
-							<TextField
-								// variant="outlined"
-								required
-								fullWidth
-								name="Address"
-								label="Address"
-								id="Address"
-								onChange={(e) => setAddress(e.target.value)}
-								autoFocus
-							/>
-						</Grid>
+									<Grid item xs={12}>
+										<TextField
+											// variant="outlined"
+											required
+											fullWidth
+											name="Address"
+											label="Address"
+											id="Address"
+											onChange={(e) => setAddress(e.target.value)}
+											autoFocus
+										/>
+									</Grid>
 
-						<Grid item xs={12}>
-							<TextField
-								// variant="outlined"
-								required
-								fullWidth
-								name="city"
-								label="City"
-								id="city"
-								onChange={(e) => setCity(e.target.value)}
-								autoFocus
-							/>
-						</Grid>
+									<Grid item xs={12}>
+										<TextField
+											// variant="outlined"
+											required
+											fullWidth
+											name="city"
+											label="City"
+											id="city"
+											onChange={(e) => setCity(e.target.value)}
+											autoFocus
+										/>
+									</Grid>
 
-						<Grid item xs={12}>
-							{/* <FormControlLabel
+									<Grid item xs={12}>
+										{/* <FormControlLabel
                 control={<Checkbox value="allowExtraEmails" color="primary" />}
                 label="I want to receive inspiration, marketing promotions and updates via email."
               /> */}
-						</Grid>
-					</Grid>
-					<Button
-						type="submit"
-						fullWidth
-						variant="contained"
-						color="primary"
-						className={classes.submit}
-					>
-						Continue
-					</Button>
-					<Grid container justifyContent="flex-end">
-						<Grid item></Grid>
-					</Grid>
-				</form>
-			</paper>
-		</Container>
+									</Grid>
+								</Grid>
+								<Button
+									type="submit"
+									fullWidth
+									variant="contained"
+									color="primary"
+									className={classes.submit}
+								>
+									Continue
+								</Button>
+								<Grid container justifyContent="flex-end">
+									<Grid item></Grid>
+								</Grid>
+							</form>
+						</paper>
+					</Typography>
+				</Container>
+			</div>
+		</>
 	);
 };
 
@@ -545,6 +553,7 @@ export default Checkout;
 // 				</form>
 // 			</div>
 // 		</Container>
+//     </>
 // 	);
 // };
 

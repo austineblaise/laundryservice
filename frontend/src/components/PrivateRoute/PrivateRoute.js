@@ -20,7 +20,7 @@ const PrivateRoute = ({ children, ...rest }) => {
         ? children
         : <Redirect to={{
             pathname: '/auth',
-            state: { from: location, error: toast.error("Please, You need to login first!!!", { position: "top-left" }) }
+            state: { from: location, error: toast.info("Please, You need to login first!!!", { position: "top-left" }) }
           }} />
     }} />
   )

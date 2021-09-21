@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import ImageIcon from "@material-ui/icons/Image";
+import { Link } from "react-router-dom";
 import {
 	Grid,
 	TableContainer,
@@ -14,7 +15,7 @@ import {
 	TableBody,
 	TableRow,
 	TableCell,
-	Link,
+	// Link,
 	CircularProgress,
 	Button,
 	Card,
@@ -27,8 +28,17 @@ import useStyles from "../AnotherStyle/Styles";
 // import useStyles from ".."
 import CheckoutWizard from "../CheckoutWizard/CheckoutWizard";
 import { createOrder } from "../../Redux/actions/orderActions";
-import { CLEAR_ORDER, ORDER_CREATE_RESET } from "../../Redux/constants/orderConstants";
+import {
+	CLEAR_ORDER,
+	ORDER_CREATE_RESET,
+} from "../../Redux/constants/orderConstants";
 import LoadingBox from "../LoadingBox/LoadingBox";
+import MetaData from "../MetaData/MetaData";
+import "./PlaceOrder.css";
+import Naira from "react-naira";
+import moment from "moment";
+import SimpleDateTime  from 'react-simple-timestamp-to-date';
+
 
 function PlaceOrder() {
 	const classes = useStyles();
@@ -58,125 +68,155 @@ function PlaceOrder() {
 	const totalPrice = round2(itemsPrice);
 
 	const placeOrderHandler = () => {
-		dispatch(createOrder({ ...cart, orderItems: cart.cartItems, totalPrice}));
+		dispatch(createOrder({ ...cart, orderItems: cart.cartItems, totalPrice }));
+		history.push("/success");
 	};
+
+	// const handleClick = () => {
+	// 	history.push("/success");
+	// };
 
 	// useEffect(() => {
 	// 	// if (!paymentMethod) {
 	// 	//   history.push('/payment');
-	//if 
+	//if
 	// 	// }
 	// 	if (cartItems.length === 0) {
 	// 		history.push("/cart");
 	// 	}
 	// }, [dispatch, cartItems.length, history]);
 
-	// 
-	
+	//
+
 	return (
-		<div>
+		<div className="back">
 			<CheckoutWizard activeStep={2} />
+			<MetaData title={"Comfirm Order"} />
+		
 			{/* <CheckoutWizard activeStep={3}></CheckoutWizard> */}
+
 			<Typography component="h4" variant="h4">
-				Place Order
+				Your Order
 			</Typography>
 
-			<Grid container spacing={1}>
-				<Grid item md={9} xs={12}>
-					<Card className={classes.section}>
-						<List>
-							<ListItem>
-								<Typography component="h4" variant="h4">
-									Shipping Address
-								</Typography>
-							</ListItem>
-							<ListItem>
-							{shippingInfo.collectionDate},{shippingInfo.fullName}, {shippingInfo.email},{" "}
-								{shippingInfo.phoneNo}, {shippingInfo.address},{" "}
-								{shippingInfo.city}
-							</ListItem>
-						</List>
-					</Card>
-					<Card className={classes.section}>
-						<List>
-							<ListItem>
-								<Typography component="h6" variant="h6">
-									Payment Method
-								</Typography>
-							</ListItem>
-							<ListItem>PAYSTACK</ListItem>
-						</List>
-					</Card>
-					<Card className={classes.section}>
-						<List>
-							<ListItem>
-								<Typography component="h6" variant="h6">
-									Order Items { order && order._id}
-								</Typography>
-							</ListItem>
-							<ListItem>
-								<TableContainer>
-									<Table>
-										<TableHead>
-											<TableRow>
-												<TableCell>Image</TableCell>
-												<TableCell>Name</TableCell>
-												<TableCell align="right">Quantity</TableCell>
-												<TableCell align="right">Price</TableCell>
-											</TableRow>
-										</TableHead>
-										<TableBody>
-											{cartItems.map((item) => (
-												<TableRow key={item._id}>
-													<TableCell>
-														{/* <NextLink href={`/product/${item.slug}`} passHref> */}
-														<Link>
-															<ListItemAvatar>
-																<Avatar>
-																	<ImageIcon />
-																</Avatar>
-															</ListItemAvatar>
-														</Link>
-														{/* </NextLink> */}
-													</TableCell>
+			{cartItems.length === 0 ? (
+				<div>
+					order is empty. <Link to="/selectionpage">Go shopping</Link>
+				</div>
+			) : (
+				
+			
+				
+				<Grid container spacing={1}>
+				
+					{/* <Typography component="h4" variant="h4">
+						Place Order
+					</Typography> */}
 
-													<TableCell>
-														<Link>
-															<Typography>{item.name}</Typography>
-														</Link>
-													</TableCell>
-													<TableCell align="right">
-														<Typography>{item.count}</Typography>
-													</TableCell>
-													<TableCell align="right">
-														<Typography>${item.price}</Typography>
-													</TableCell>
+					<Grid item md={9} xs={12}>
+						<Card className={classes.section}>
+							<List>
+								<ListItem>
+									<Typography component="h5" variant="h5">
+										Shipping Address
+									</Typography>
+								</ListItem>
+								<ListItem>
+								Date for Pick Up: <span style={{ marginLeft: '0.3rem', color: "blue" }}><SimpleDateTime dateSeparator="-" format="MYD" timeSeparator=":" meridians="1">{shippingInfo.collectionDate}</SimpleDateTime></span>
+								
+								{/* <SimpleDateTime dateSeparator="-" format="MYD" timeSeparator=":" meridians="1">{'2020-04-19 22:03:44'}</SimpleDateTime> */}
+									
+								</ListItem>
+								{/* //style={{ color: "#151E3D" }} */}
+								<ListItem>Full Name: <span style={{ marginLeft: '0.3rem', color: "blue" }}>{shippingInfo.fullName}</span></ListItem>
+								<ListItem>Email: <span style={{ marginLeft: '0.3rem', color: "blue" }}>{shippingInfo.email}</span></ListItem>
+								<ListItem>Phone Number:<span style={{ marginLeft: '0.3rem', color: "blue" }}> {shippingInfo.phoneNo} </span></ListItem>
+								<ListItem>Address: <span style={{ marginLeft: '0.3rem', color: "blue" }}>{shippingInfo.address}, {shippingInfo.city}</span></ListItem>
+							</List>
+						</Card>
+						<Card className={classes.section}>
+							<List>
+								<ListItem>
+									<Typography component="h6" variant="h6">
+									Order ID: <span style={{ color: "rgb(5, 5, 54)", fontFamily: "monospace" }}> {cartItems[0]._id}</span>
+									</Typography>
+								</ListItem>
+								{/* <ListItem>PAYSTACK</ListItem> */}
+							</List>
+						</Card>
+						<Card className={classes.section}>
+							<List>
+								{/* <ListItem>
+									<Typography component="h6" variant="h6">
+										Order Items {cartItems[0]._id}
+									</Typography>
+								</ListItem> */}
+								<ListItem>
+									<TableContainer>
+										<Table>
+											<TableHead>
+												<TableRow>
+													<TableCell>-----</TableCell>
+													<TableCell>Name</TableCell>
+													<TableCell align="center">Quantity</TableCell>
+													<TableCell align="center">Price</TableCell>
 												</TableRow>
-											))}
-										</TableBody>
-									</Table>
-								</TableContainer>
-							</ListItem>
-						</List>
-					</Card>
-				</Grid>
-				<Grid item md={3} xs={12}>
-					<Card className={classes.section}>
-						<List>
-							<ListItem>
-								<Typography variant="h5">Order Summary</Typography>
-							</ListItem>
-							<ListItem>
-								<Grid container>
-									<Grid item xs={6}>
-										<Typography>Items:</Typography>
+											</TableHead>
+											<TableBody>
+												{cartItems.map((item) => (
+													<TableRow key={item._id}>
+														<TableCell>
+															{/* <NextLink href={`/product/${item.slug}`} passHref> */}
+															
+																<ListItemAvatar>
+																	<Avatar>
+																		<ImageIcon />
+																	</Avatar>
+																</ListItemAvatar>
+															
+															{/* </NextLink> */}
+														</TableCell>
+
+														<TableCell>
+															
+																<Typography  style={{ color: "#151E3D" }}>{item.name}</Typography>
+															
+														</TableCell>
+														<TableCell align="center">
+															<Typography>{item.count}</Typography>
+														</TableCell>
+														<TableCell align="center">
+															<Typography style={{
+																			color: "tomato",
+																			fontFamily: "monospace",
+																		}}><Naira>{item.price}</Naira></Typography>
+														</TableCell>
+													</TableRow>
+												))}
+											</TableBody>
+										</Table>
+									</TableContainer>
+								</ListItem>
+							</List>
+						</Card>
+					</Grid>
+					<Grid item md={3} xs={12}>
+						<Card className={classes.section}>
+							<List>
+								<ListItem>
+									<Typography variant="h5">Order Summary</Typography>
+								</ListItem>
+								<ListItem>
+									<Grid container>
+										<Grid item xs={6}>
+											<Typography>Items:</Typography>
+										</Grid>
+										<Grid item xs={6}>
+											<Typography align="right"><strong>{cartItems.reduce((a, c) => a + c.count, 0)}</strong></Typography>
+										</Grid>
 									</Grid>
-									<Grid item xs={6}>
-										<Typography align="right">${itemsPrice}</Typography>
-									</Grid>
-								</Grid>
-							</ListItem>
-							{/* <ListItem>
+								</ListItem>
+								{/* <ListItem>
 								<Grid container>
 									<Grid item xs={6}>
 										<Typography>Tax:</Typography>
@@ -186,7 +226,7 @@ function PlaceOrder() {
 									</Grid>
 								</Grid>
 							</ListItem> */}
-							{/* <ListItem>
+								{/* <ListItem>
 								<Grid container>
 									<Grid item xs={6}>
 										<Typography>Shipping:</Typography>
@@ -196,44 +236,45 @@ function PlaceOrder() {
 									</Grid>
 								</Grid>
 							</ListItem> */}
-							<ListItem>
-								<Grid container>
-									<Grid item xs={6}>
-										<Typography>
-											<strong>Total:</strong>
-										</Typography>
+								<ListItem>
+									<Grid container>
+										<Grid item xs={6}>
+											<Typography>
+												<strong>Total:</strong>
+											</Typography>
+										</Grid>
+										<Grid item xs={6}>
+											<Typography align="right">
+												<strong><Naira>{totalPrice}</Naira></strong>
+											</Typography>
+										</Grid>
 									</Grid>
-									<Grid item xs={6}>
-										<Typography align="right">
-											<strong>${totalPrice}</strong>
-										</Typography>
-									</Grid>
-								</Grid>
-							</ListItem>
-							<ListItem>
-								<Button
-									// onClick={placeOrderHandler}
-									onClick={placeOrderHandler }
-									variant="contained"
-									color="primary"
-									fullWidth
-								>
-									Place Order
-								</Button>
+								</ListItem>
+								<ListItem>
+									<Button
+										// onClick={placeOrderHandler}
+										onClick={placeOrderHandler}
+										variant="contained"
+										color="primary"
+										fullWidth
+									>
+										Place Order
+									</Button>
 
-								{loading && <LoadingBox />}
+									{loading && <LoadingBox />}
 
-								{error && <div>{error}</div>}
-							</ListItem>
-							{/* {loading && (
+									{error && <div>{error}</div>}
+								</ListItem>
+								{/* {loading && (
 								<ListItem>
 									<CircularProgress />
 								</ListItem>
 							)} */}
-						</List>
-					</Card>
+							</List>
+						</Card>
+					</Grid>
 				</Grid>
-			</Grid>
+			)}
 		</div>
 	);
 }

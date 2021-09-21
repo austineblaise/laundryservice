@@ -11,7 +11,10 @@ export const signin = (formData, router) => async (dispatch) => {
 
     dispatch({ type: AUTH, data });
     localStorage.setItem('authData', JSON.stringify(data));
-    router.push('/selectionpage');
+    toast.success("You have successfully signed in!!!", {
+      position: 'center-left'
+    })
+    // router.push('/selectionpage');
   } catch (error) {
     const message =
 			error.response && error.response.data.message
@@ -31,7 +34,11 @@ export const signup = (formData, router) => async (dispatch) => {
 
     dispatch({ type: AUTH, data });
 
-    router.push('/');
+    toast.error("You have successfully signed in!!!", {
+      position: 'top-left'
+    })
+
+    // router.push('/');
   } catch (error) {
     const message =
 			error.response && error.response.data.message
