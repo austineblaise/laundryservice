@@ -27,7 +27,7 @@ const Successpage = () => {
     <p className="pp">Dear {user?.result.name}, We received your request;<br /> we'll be in touch shortly!</p>
     <Button onClick={handleClick} variant="contained" color="success">
        please go back home
-      </Button>
+    </Button>
 </div>
 
 

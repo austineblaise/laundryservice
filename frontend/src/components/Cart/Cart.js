@@ -115,8 +115,10 @@ const Cart = () => {
 		<>
 			<MetaData title={"Your Cart"} />
 
+			<SelectionNavbar />
+
 			<div className="back" style={{ minHeight: "100vh", overflowX: "hidden" }}>
-				<SelectionNavbar />
+				
 				<Typography component="h4" variant="h4">
 					My Cart
 				</Typography>
@@ -242,7 +244,7 @@ const Cart = () => {
 										onClick={handleClick}
 										style={{ cursor: "pointer" }}
 									>
-										Continue Shopping <AddShoppingCartIcon />
+										Continue Selecting <AddShoppingCartIcon />
 									</Typography>
 								</List>
 

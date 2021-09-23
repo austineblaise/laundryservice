@@ -85,7 +85,7 @@ const SelectionNavbar = () => {
 							{user?.result.name.charAt(0)}
 						</Avatar>
 						<Typography className={classes.userName} variant="h6">
-						 Welcome, {user?.result.name}
+						  {user?.result.name}
 						</Typography>
 						<Button
 							variant="contained"
