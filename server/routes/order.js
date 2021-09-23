@@ -32,6 +32,18 @@ orderRouter.post(
 	})
 );
 
+
+
+orderRouter.get(
+	"/",
+	expressAsyncHandler(async (req, res) => {
+		const order = await Order.find({});
+		res.send(order);
+	})
+);
+
+
+
 // productRouter.get(
 // 	"/seed",
 // 	expressAsyncHandler(async (req, res) => {
