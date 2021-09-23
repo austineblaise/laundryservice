@@ -9,13 +9,11 @@ import products from "./routes/product.js";
 import productRouter from "./routes/product.js";
 import orderRouter from "./routes/order.js";
 import colors from "colors";
- import dotenv from "dotenv";
- import connectDB from "./config/db.js";
- import path from "path";
+import dotenv from "dotenv";
+import connectDB from "./config/db.js";
+import path from "path";
 
-
- dotenv.config();
-
+dotenv.config();
 
 connectDB();
 
@@ -32,12 +30,23 @@ app.use("/user", userRouter);
 app.use("/api/products", productRouter);
 app.use("/api/orders", orderRouter);
 
+const __dirname = path.resolve();
 
-app.get("/", (req, res) => {
-	res.send("hello to laundrymasters API....");
-});
+if (process.env.NODE_ENV === "production") {
+	app.use(express.static(path.join(__dirname, "/frontend/build")));
 
+	app.get("*", (req, res) => {
+		res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
+	});
+} else {
+	app.get("/", (req, res) => {
+		res.send("hello to laundrymasters API....");
+	});
+}
 
+// app.get("/", (req, res) => {
+// 	res.send("hello to laundrymasters API....");
+// });
 
 // const __dirname = path.resolve();
 // // app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
@@ -54,9 +63,6 @@ app.get("/", (req, res) => {
 // 	});
 // }
 
-
-
-
 // app.use(notFound);
 // app.use(errorHandler);
 
@@ -68,9 +74,6 @@ app.listen(
 		`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold
 	)
 );
-
-
-
 
 // const CONNECTION_URL =
 // 	"mongodb+srv://laundrymasters:laundry1991@cluster0.jtbv8.mongodb.net/laundrymasters?retryWrites=true&w=majority";
